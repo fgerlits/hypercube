@@ -6,30 +6,33 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.SystemClock;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    Triangle triangle;
-    Square square;
+    Cube cube;
 
     public static final String vertexShaderCode =
                     // This matrix member variable provides a hook to manipulate
                     // the coordinates of the objects that use this vertex shader
                     "uniform mat4 uMVPMatrix;" +
                     "attribute vec4 vPosition;" +
+                    "attribute vec4 vColor;" +
+                    "out vec4 fragmentColor;" +
                     "void main() {" +
                     // the matrix must be included as a modifier of gl_Position
                     // Note that the uMVPMatrix factor *must be first* in order
                     // for the matrix multiplication product to be correct.
-                    "  gl_Position = uMVPMatrix * vPosition;" +
+                    "    gl_Position = uMVPMatrix * vPosition;" +
+                    "    fragmentColor = vColor;" +
                     "}";
 
     public static final String fragmentShaderCode =
                     "precision mediump float;" +
-                    "uniform vec4 vColor;" +
+                    "in vec4 fragmentColor;" +
+                    //"out vec4 color; " +
                     "void main() {" +
-                    "  gl_FragColor = vColor;" +
+                    "    gl_FragColor = fragmentColor;" +
+                    //"    color = fragmentColor;" +
                     "}";
 
     @Override
@@ -37,8 +40,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        triangle = new Triangle();
-        square = new Square();
+        cube = new Cube();
     }
 
     private float angle = 0.0f;
@@ -64,7 +66,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float[] vpMatrix = new float[16];
         Matrix.multiplyMM(vpMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
-        // Create a rotation transformation for the triangle
+        // Create a rotation transformation for the cube
         float[] rotationMatrix = new float[16];
         Matrix.setRotateM(rotationMatrix, 0, - angle, 0, 0, -1.0f);
 
@@ -75,7 +77,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mvpMatrix, 0, vpMatrix, 0, rotationMatrix, 0);
 
         // Draw shape
-        triangle.draw(mvpMatrix);
+        cube.draw(mvpMatrix);
     }
 
     private final float[] projectionMatrix = new float[16];
@@ -88,7 +90,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 7);
     }
 
     public static int loadShader(int type, String shaderCode) {
