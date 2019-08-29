@@ -23,7 +23,7 @@ class MyGLSurfaceView extends GLSurfaceView {
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
+    private final float FUDGE_FACTOR = 180.0f / 320;
     private float previousX;
     private float previousY;
 
@@ -42,19 +42,9 @@ class MyGLSurfaceView extends GLSurfaceView {
                 float dx = x - previousX;
                 float dy = y - previousY;
 
-                // reverse direction of rotation above the mid-line
-                if (y > getHeight() / 2) {
-                    dx = dx * -1 ;
-                }
+                renderer.setHorizontalAngle(dx * FUDGE_FACTOR);
+                renderer.setVerticalAngle(dy * FUDGE_FACTOR);
 
-                // reverse direction of rotation to left of the mid-line
-                if (x < getWidth() / 2) {
-                    dy = dy * -1 ;
-                }
-
-                renderer.setAngle(
-                        renderer.getAngle() +
-                                ((dx + dy) * TOUCH_SCALE_FACTOR));
                 requestRender();
         }
 

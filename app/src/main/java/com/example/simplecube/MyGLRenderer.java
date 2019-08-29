@@ -1,11 +1,11 @@
 package com.example.simplecube;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
@@ -46,14 +46,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         cube = new Cube();
     }
 
-    private float angle = 0.0f;
+    private float horizontalAngle = 0.0f;
+    private float verticalAngle = 0.0f;
 
-    public float getAngle() {
-        return angle;
+    public void setHorizontalAngle(float angle) {
+        this.horizontalAngle = angle;
     }
 
-    public void setAngle(float angle) {
-        this.angle = angle;
+    public void setVerticalAngle(float angle) {
+        this.verticalAngle = angle;
     }
 
     @Override
@@ -72,9 +73,38 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     // Set the position of the model
     private float[] createModelMatrix() {
-        float[] rotationMatrix = new float[16];
-        Matrix.setRotateM(rotationMatrix, 0, - angle, 0, 0, -1.0f);
-        return rotationMatrix;
+        float[] direction = sphericalToCartesian(horizontalAngle, verticalAngle);
+        float[] right = {(float) Math.sin(horizontalAngle - Math.PI / 2),
+                0f,
+                (float) Math.cos(horizontalAngle - Math.PI / 2)};
+        float[] up = crossProduct(right, direction);
+
+        float[] modelMatrix = new float[16];
+        Matrix.setLookAtM(modelMatrix, 0,
+                direction[0], direction[1], direction[2],
+                0f, 0f, 0f,
+                up[0], up[1], up[2]);
+        return modelMatrix;
+    }
+
+    private float[] sphericalToCartesian(float horizontalAngle, float verticalAngle) {
+        double distance = 10.0;
+
+        return new float[]{
+                (float) (Math.cos(verticalAngle) * Math.sin(horizontalAngle) * distance),
+                (float) (Math.sin(verticalAngle) * distance),
+                (float) (Math.cos(verticalAngle) * Math.cos(horizontalAngle) * distance)
+        };
+
+    }
+
+    // I'm sure there is a library function for this, but couldn't find it
+    private float[] crossProduct(float[] a, float[] b) {
+        return new float[]{
+                a[2] * b[3] - a[3] * b[2],
+                a[3] * b[1] - a[1] * b[3],
+                a[1] * b[2] - a[2] * b[1]
+        };
     }
 
     // Set the camera position (View matrix)
