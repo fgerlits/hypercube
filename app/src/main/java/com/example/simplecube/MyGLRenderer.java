@@ -58,53 +58,58 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        // Redraw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        // Set the camera position (View matrix)
-        float[] viewMatrix = new float[16];
-        Matrix.setLookAtM(viewMatrix, 0, 2, 1.5f, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        float[] viewMatrix = createViewMatrix();
 
-        // Calculate the projection and view transformation
-        float[] vpMatrix = new float[16];
-        Matrix.multiplyMM(vpMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+        float[] modelMatrix = createModelMatrix();
 
-        // Create a rotation transformation for the cube
-        float[] rotationMatrix = new float[16];
-        Matrix.setRotateM(rotationMatrix, 0, - angle, 0, 0, -1.0f);
+        // Note that the order must be projection * view * model.
+        float[] mvpMatrix = multiplyMatrix(multiplyMatrix(projectionMatrix, viewMatrix), modelMatrix);
 
-        // Combine the rotation matrix with the projection and camera view
-        // Note that the vpMatrix factor *must be first* in order
-        // for the matrix multiplication product to be correct.
-        float[] mvpMatrix = new float[16];
-        Matrix.multiplyMM(mvpMatrix, 0, vpMatrix, 0, rotationMatrix, 0);
-
-        // Draw shape
         cube.draw(mvpMatrix);
     }
 
-    private final float[] projectionMatrix = new float[16];
+    // Set the position of the model
+    private float[] createModelMatrix() {
+        float[] rotationMatrix = new float[16];
+        Matrix.setRotateM(rotationMatrix, 0, - angle, 0, 0, -1.0f);
+        return rotationMatrix;
+    }
+
+    // Set the camera position (View matrix)
+    private float[] createViewMatrix() {
+        float[] viewMatrix = new float[16];
+        Matrix.setLookAtM(viewMatrix, 0, 2, 1.5f, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        return viewMatrix;
+    }
+
+    private float[] createProjectionMatrix(int width, int height) {
+        float[] projectionMatrix = new float[16];
+        float ratio = (float) width / height;
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 7);
+        return projectionMatrix;
+    }
+
+    private float[] multiplyMatrix(float[] left, float[] right) {
+        float[] mvpMatrix = new float[16];
+        Matrix.multiplyMM(mvpMatrix, 0, left, 0, right, 0);
+        return mvpMatrix;
+    }
+
+    private float[] projectionMatrix = new float[16];
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-
-        float ratio = (float) width / height;
-
-        // this projection matrix is applied to object coordinates
-        // in the onDrawFrame() method
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 7);
+        projectionMatrix = createProjectionMatrix(width, height);
     }
 
+    // type is either GLES20.GL_VERTEX_SHADER or GLES20.GL_FRAGMENT_SHADER
     public static int loadShader(int type, String shaderCode) {
-        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
         int shader = GLES20.glCreateShader(type);
-
-        // add the source code to the shader and compile it
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
-
         return shader;
     }
 
