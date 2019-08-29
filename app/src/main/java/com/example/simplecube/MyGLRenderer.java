@@ -80,14 +80,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     // Set the camera position (View matrix)
     private float[] createViewMatrix() {
         float[] viewMatrix = new float[16];
-        Matrix.setLookAtM(viewMatrix, 0, 2, 1.5f, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(viewMatrix, 0,
+                4, 3, 5,
+                0f, 0f, 0f,
+                0f, 1.0f, 0.0f);
         return viewMatrix;
     }
 
-    private float[] createProjectionMatrix(int width, int height) {
+    private float[] createProjectionMatrix(float width, float height) {
         float[] projectionMatrix = new float[16];
-        float ratio = (float) width / height;
-        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 7);
+        Matrix.perspectiveM(projectionMatrix, 0, 45, width / height, 0.1f, 100.0f);
         return projectionMatrix;
     }
 
