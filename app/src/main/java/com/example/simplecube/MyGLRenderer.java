@@ -81,8 +81,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         float[] modelMatrix = new float[16];
         Matrix.setLookAtM(modelMatrix, 0,
-                direction[0], direction[1], direction[2],
                 0f, 0f, 0f,
+                direction[0], direction[1], direction[2],
                 up[0], up[1], up[2]);
         return modelMatrix;
     }
