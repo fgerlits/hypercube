@@ -101,9 +101,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     // I'm sure there is a library function for this, but couldn't find it
     private float[] crossProduct(float[] a, float[] b) {
         return new float[]{
-                a[2] * b[3] - a[3] * b[2],
-                a[3] * b[1] - a[1] * b[3],
-                a[1] * b[2] - a[2] * b[1]
+                a[1] * b[2] - a[2] * b[1],
+                a[2] * b[0] - a[0] * b[2],
+                a[0] * b[1] - a[1] * b[0]
         };
     }
 
