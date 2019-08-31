@@ -23,7 +23,7 @@ class MyGLSurfaceView extends GLSurfaceView {
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-    private final float FUDGE_FACTOR = 180.0f / 320;
+    private final float FUDGE_FACTOR = (float) (Math.PI / 2 / 320);
     private float previousX;
     private float previousY;
 
@@ -42,8 +42,9 @@ class MyGLSurfaceView extends GLSurfaceView {
                 float dx = x - previousX;
                 float dy = y - previousY;
 
-                renderer.setHorizontalAngle(dx * FUDGE_FACTOR);
-                renderer.setVerticalAngle(dy * FUDGE_FACTOR);
+                // not sure why we need to reverse them, but it works better this way
+                renderer.addHorizontalAngle(-dx * FUDGE_FACTOR);
+                renderer.addVerticalAngle(-dy * FUDGE_FACTOR);
 
                 requestRender();
         }

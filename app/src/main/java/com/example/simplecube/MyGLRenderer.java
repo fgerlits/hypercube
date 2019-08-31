@@ -49,12 +49,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float horizontalAngle = 0.0f;
     private float verticalAngle = 0.0f;
 
-    public void setHorizontalAngle(float angle) {
-        this.horizontalAngle = angle;
+    public void addHorizontalAngle(float angle) {
+        this.horizontalAngle += angle;
     }
 
-    public void setVerticalAngle(float angle) {
-        this.verticalAngle = angle;
+    public void addVerticalAngle(float angle) {
+        this.verticalAngle += angle;
     }
 
     @Override
