@@ -5,102 +5,37 @@ import android.opengl.GLES20;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cube {
 
+    public static final int NUMBER_OF_FACES = 6;
+    public static final int TRIANGLES_PER_FACE = 2;
+    public static final int VERTICES_PER_TRIANGLE = 3;
+    public static final int COORDS_PER_VERTEX = 3;  // x, y, z
+    public static final int COLORS_PER_VERTEX = 3;  // red, green, blue
     public static final int SIZE_OF_FLOAT = 4;
 
     private final int program;
+    private static int[] PLUS_OR_MINUS_ONE = {-1, 1};
+    private final int vertexCount = NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE;
+    private List<Vertex> vertices;
+    private List<Face> faces;
+
     private FloatBuffer vertexBuffer;
     private FloatBuffer colorBuffer;
-
-    // number of coordinates per vertex in this array
-    static final int COORDS_PER_VERTEX = 3;
-    // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a cube.
-    // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-    static float g_vertex_buffer_data[] = {
-            -1.0f,-1.0f,-1.0f, // cube 1 : begin
-            -1.0f,-1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f, // cube 1 : end
-            1.0f, 1.0f,-1.0f, // cube 2 : begin
-            -1.0f,-1.0f,-1.0f,
-            -1.0f, 1.0f,-1.0f, // cube 2 : end
-            1.0f,-1.0f, 1.0f,
-            -1.0f,-1.0f,-1.0f,
-            1.0f,-1.0f,-1.0f,
-            1.0f, 1.0f,-1.0f,
-            1.0f,-1.0f,-1.0f,
-            -1.0f,-1.0f,-1.0f,
-            -1.0f,-1.0f,-1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f,-1.0f,
-            1.0f,-1.0f, 1.0f,
-            -1.0f,-1.0f, 1.0f,
-            -1.0f,-1.0f,-1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f,-1.0f, 1.0f,
-            1.0f,-1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f,-1.0f,-1.0f,
-            1.0f, 1.0f,-1.0f,
-            1.0f,-1.0f,-1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f,-1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f,-1.0f,
-            -1.0f, 1.0f,-1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f,-1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f,-1.0f, 1.0f
-    };
-
-    // number of colors (R, G, B) per vertex
-    static final int COLORS_PER_VERTEX = 3;
-    // One color for each vertex. They were generated randomly.
-    static float g_color_buffer_data[] = {
-            0.583f,  0.771f,  0.014f,
-            0.609f,  0.115f,  0.436f,
-            0.327f,  0.483f,  0.844f,
-            0.822f,  0.569f,  0.201f,
-            0.435f,  0.602f,  0.223f,
-            0.310f,  0.747f,  0.185f,
-            0.597f,  0.770f,  0.761f,
-            0.559f,  0.436f,  0.730f,
-            0.359f,  0.583f,  0.152f,
-            0.483f,  0.596f,  0.789f,
-            0.559f,  0.861f,  0.639f,
-            0.195f,  0.548f,  0.859f,
-            0.014f,  0.184f,  0.576f,
-            0.771f,  0.328f,  0.970f,
-            0.406f,  0.615f,  0.116f,
-            0.676f,  0.977f,  0.133f,
-            0.971f,  0.572f,  0.833f,
-            0.140f,  0.616f,  0.489f,
-            0.997f,  0.513f,  0.064f,
-            0.945f,  0.719f,  0.592f,
-            0.543f,  0.021f,  0.978f,
-            0.279f,  0.317f,  0.505f,
-            0.167f,  0.620f,  0.077f,
-            0.347f,  0.857f,  0.137f,
-            0.055f,  0.953f,  0.042f,
-            0.714f,  0.505f,  0.345f,
-            0.783f,  0.290f,  0.734f,
-            0.722f,  0.645f,  0.174f,
-            0.302f,  0.455f,  0.848f,
-            0.225f,  0.587f,  0.040f,
-            0.517f,  0.713f,  0.338f,
-            0.053f,  0.959f,  0.120f,
-            0.393f,  0.621f,  0.362f,
-            0.673f,  0.211f,  0.457f,
-            0.820f,  0.883f,  0.371f,
-            0.982f,  0.099f,  0.879f
-    };
+    private float[] g_vertex_buffer_data;
+    private float[] g_color_buffer_data;
 
     public Cube() {
         program = createProgram();
+
+        createVertices();
+        createFaces();
+
+        createVertexBuffer();
+        createColorBuffer();
 
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
@@ -129,6 +64,47 @@ public class Cube {
         colorBuffer.position(0);
     }
 
+    private void createVertices() {
+        vertices = new ArrayList<>();
+        for (int x : PLUS_OR_MINUS_ONE) {
+            for (int y : PLUS_OR_MINUS_ONE) {
+                for (int z : PLUS_OR_MINUS_ONE) {
+                    vertices.add(new Vertex(x, y, z));
+                }
+            }
+        }
+    }
+
+    private void createFaces() {
+        faces = new ArrayList<>();
+        faces.add(new Face(listOfVertices(0, 1, 2, 3), Color.RED));     // left
+        faces.add(new Face(listOfVertices(0, 1, 4, 5), Color.GREEN));   // front
+        faces.add(new Face(listOfVertices(2, 3, 6, 7), Color.BLUE));    // back
+        faces.add(new Face(listOfVertices(0, 2, 4, 6), Color.YELLOW));  // bottom
+        faces.add(new Face(listOfVertices(1, 3, 5, 7), Color.CYAN));    // top
+        faces.add(new Face(listOfVertices(4, 5, 6, 7), Color.MAGENTA)); // right
+    }
+
+    private void createVertexBuffer() {
+        g_vertex_buffer_data = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COORDS_PER_VERTEX];
+        int offset = 0;
+        for (Face face : faces) {
+            offset = face.writeVerticestoFloatArray(g_vertex_buffer_data, offset);
+        }
+    }
+
+    private void createColorBuffer() {
+        g_color_buffer_data = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COLORS_PER_VERTEX];
+        int offset = 0;
+        for (Face face : faces) {
+            for (int i = 0; i < TRIANGLES_PER_FACE; ++i) {
+                for (int j = 0; j < VERTICES_PER_TRIANGLE; ++j) {
+                    offset = face.writeColorToFloatArray(g_color_buffer_data, offset);
+                }
+            }
+        }
+    }
+
     private static int createProgram() {
         int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
                 MyGLRenderer.vertexShaderCode);
@@ -154,7 +130,13 @@ public class Cube {
     private int colorHandle;
     private int vPMatrixHandle;
 
-    private final int vertexCount = g_vertex_buffer_data.length / COORDS_PER_VERTEX;
+    private List<Vertex> listOfVertices(int... indices) {
+        List<Vertex> list = new ArrayList<>();
+        for (int index : indices) {
+            list.add(vertices.get(index));
+        }
+        return list;
+    }
     private final int vertexStride = COORDS_PER_VERTEX * SIZE_OF_FLOAT;
     private final int colorStride = COLORS_PER_VERTEX * SIZE_OF_FLOAT;
 
@@ -198,5 +180,4 @@ public class Cube {
         GLES20.glDisableVertexAttribArray(colorHandle);
         // should we release the matrix handle, too?
     }
-
 }
