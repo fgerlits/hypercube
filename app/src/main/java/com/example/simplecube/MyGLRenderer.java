@@ -46,15 +46,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         cube = new Cube();
     }
 
-    private float horizontalAngle = 0.0f;
-    private float verticalAngle = 0.0f;
+    private float horizontalAngle = 0;
+    private float verticalAngle = 0;
+    private float radiansPerPixel = 1;
 
-    public void addHorizontalAngle(float angle) {
-        this.horizontalAngle += angle;
+    public void dragHorizontal(float dx) {
+        this.horizontalAngle += dx * radiansPerPixel;
     }
 
-    public void addVerticalAngle(float angle) {
-        this.verticalAngle += angle;
+    public void dragVertical(float dy) {
+        this.verticalAngle += dy * radiansPerPixel;
     }
 
     @Override
@@ -134,6 +135,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
+        radiansPerPixel = (float) (Math.PI / 2 / Math.min(width, height));
         projectionMatrix = createProjectionMatrix(width, height);
     }
 
