@@ -17,51 +17,23 @@ public class Cube {
     public static final int COLORS_PER_VERTEX = 3;  // red, green, blue
     public static final int SIZE_OF_FLOAT = 4;
 
-    private final int program;
     private static int[] PLUS_OR_MINUS_ONE = {-1, 1};
     private final int vertexCount = NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE;
     private List<Vertex> vertices;
     private List<Face> faces;
 
+    private int program;
     private FloatBuffer vertexBuffer;
     private FloatBuffer colorBuffer;
-    private float[] g_vertex_buffer_data;
-    private float[] g_color_buffer_data;
 
     public Cube() {
-        program = createProgram();
+        createProgram();
 
         createVertices();
         createFaces();
 
         createVertexBuffer();
         createColorBuffer();
-
-        // initialize vertex byte buffer for shape coordinates
-        ByteBuffer bb = ByteBuffer.allocateDirect(
-                g_vertex_buffer_data.length * SIZE_OF_FLOAT);
-        // use the device hardware's native byte order
-        bb.order(ByteOrder.nativeOrder());
-
-        // create a floating point buffer from the ByteBuffer
-        vertexBuffer = bb.asFloatBuffer();
-        // add the coordinates to the FloatBuffer
-        vertexBuffer.put(g_vertex_buffer_data);
-        // set the buffer to read the first coordinate
-        vertexBuffer.position(0);
-
-        // initialize color byte buffer for shape coordinates
-        ByteBuffer cb = ByteBuffer.allocateDirect(
-                g_color_buffer_data.length * SIZE_OF_FLOAT);
-        // use the device hardware's native byte order
-        cb.order(ByteOrder.nativeOrder());
-
-        // create a floating point buffer from the ByteBuffer
-        colorBuffer = cb.asFloatBuffer();
-        // add the coordinates to the FloatBuffer
-        colorBuffer.put(g_color_buffer_data);
-        // set the buffer to read the first coordinate
-        colorBuffer.position(0);
     }
 
     private void createVertices() {
@@ -85,34 +57,14 @@ public class Cube {
         faces.add(new Face(listOfVertices(4, 5, 6, 7), Color.MAGENTA)); // right
     }
 
-    private void createVertexBuffer() {
-        g_vertex_buffer_data = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COORDS_PER_VERTEX];
-        int offset = 0;
-        for (Face face : faces) {
-            offset = face.writeVerticestoFloatArray(g_vertex_buffer_data, offset);
-        }
-    }
-
-    private void createColorBuffer() {
-        g_color_buffer_data = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COLORS_PER_VERTEX];
-        int offset = 0;
-        for (Face face : faces) {
-            for (int i = 0; i < TRIANGLES_PER_FACE; ++i) {
-                for (int j = 0; j < VERTICES_PER_TRIANGLE; ++j) {
-                    offset = face.writeColorToFloatArray(g_color_buffer_data, offset);
-                }
-            }
-        }
-    }
-
-    private static int createProgram() {
+    private void createProgram() {
         int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
                 MyGLRenderer.vertexShaderCode);
         int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER,
                 MyGLRenderer.fragmentShaderCode);
 
         // create empty OpenGL ES Program
-        int program = GLES20.glCreateProgram();
+        program = GLES20.glCreateProgram();
 
         // add the vertex shader to program
         GLES20.glAttachShader(program, vertexShader);
@@ -123,7 +75,54 @@ public class Cube {
         // creates OpenGL ES program executables
         GLES20.glLinkProgram(program);
 
-        return program;
+    }
+
+    private void createVertexBuffer() {
+        float[] vertexBufferData = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COORDS_PER_VERTEX];
+
+        int offset = 0;
+        for (Face face : faces) {
+            offset = face.writeVerticestoFloatArray(vertexBufferData, offset);
+        }
+
+        // initialize vertex byte buffer for shape coordinates
+        ByteBuffer bb = ByteBuffer.allocateDirect(
+                vertexBufferData.length * SIZE_OF_FLOAT);
+        // use the device hardware's native byte order
+        bb.order(ByteOrder.nativeOrder());
+
+        // create a floating point buffer from the ByteBuffer
+        vertexBuffer = bb.asFloatBuffer();
+        // add the coordinates to the FloatBuffer
+        vertexBuffer.put(vertexBufferData);
+        // set the buffer to read the first coordinate
+        vertexBuffer.position(0);
+    }
+
+    private void createColorBuffer() {
+        float[] colorBufferData = new float[NUMBER_OF_FACES * TRIANGLES_PER_FACE * VERTICES_PER_TRIANGLE * COLORS_PER_VERTEX];
+
+        int offset = 0;
+        for (Face face : faces) {
+            for (int i = 0; i < TRIANGLES_PER_FACE; ++i) {
+                for (int j = 0; j < VERTICES_PER_TRIANGLE; ++j) {
+                    offset = face.writeColorToFloatArray(colorBufferData, offset);
+                }
+            }
+        }
+
+        // initialize color byte buffer for shape coordinates
+        ByteBuffer cb = ByteBuffer.allocateDirect(
+                colorBufferData.length * SIZE_OF_FLOAT);
+        // use the device hardware's native byte order
+        cb.order(ByteOrder.nativeOrder());
+
+        // create a floating point buffer from the ByteBuffer
+        colorBuffer = cb.asFloatBuffer();
+        // add the coordinates to the FloatBuffer
+        colorBuffer.put(colorBufferData);
+        // set the buffer to read the first coordinate
+        colorBuffer.position(0);
     }
 
     private int positionHandle;
