@@ -1,4 +1,4 @@
-package com.example.simplecube;
+package ferenc_gerlits.hypercube_viewer;
 
 public class Vertex {
     private float x;

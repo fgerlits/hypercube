@@ -1,4 +1,4 @@
-package com.example.simplecube;
+package ferenc_gerlits.hypercube_viewer;
 
 public enum Color {
     RED(1, 0, 0),
