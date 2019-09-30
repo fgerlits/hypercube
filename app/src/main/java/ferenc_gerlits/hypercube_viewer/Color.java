@@ -6,7 +6,9 @@ public enum Color {
     BLUE(0, 0, 1),
     YELLOW(1, 1, 0),
     MAGENTA(1, 0, 1),
-    CYAN(0, 1, 1);
+    CYAN(0, 1, 1),
+    ORANGE(1, 0.5f, 0),
+    LIGHT_BLUE(0, 0.5f, 1);
 
     private float red;
     private float green;

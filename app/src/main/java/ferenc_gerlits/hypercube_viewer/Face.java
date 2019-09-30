@@ -12,6 +12,10 @@ public class Face {
         this.color = color;
     }
 
+    public Face(List<Edge> edges) {
+        // TODO
+    }
+
     public int writeVerticestoFloatArray(float[] array, int offset) {
         for (Vertex vertex : listOfVertices(0, 1, 2)) {     // first triangle
             offset = vertex.writeToFloatArray(array, offset);
