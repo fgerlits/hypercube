@@ -49,12 +49,12 @@ public class Cube {
 
     private void createFaces() {
         faces = new ArrayList<>();
-        faces.add(new Face(listOfVertices(0, 1, 2, 3), Color.RED));     // left
-        faces.add(new Face(listOfVertices(0, 1, 4, 5), Color.GREEN));   // front
-        faces.add(new Face(listOfVertices(2, 3, 6, 7), Color.BLUE));    // back
-        faces.add(new Face(listOfVertices(0, 2, 4, 6), Color.YELLOW));  // bottom
-        faces.add(new Face(listOfVertices(1, 3, 5, 7), Color.CYAN));    // top
-        faces.add(new Face(listOfVertices(4, 5, 6, 7), Color.MAGENTA)); // right
+        faces.add(new CubeFace(listOfVertices(0, 1, 2, 3), Color.RED));     // left
+        faces.add(new CubeFace(listOfVertices(0, 1, 4, 5), Color.GREEN));   // front
+        faces.add(new CubeFace(listOfVertices(2, 3, 6, 7), Color.BLUE));    // back
+        faces.add(new CubeFace(listOfVertices(0, 2, 4, 6), Color.YELLOW));  // bottom
+        faces.add(new CubeFace(listOfVertices(1, 3, 5, 7), Color.CYAN));    // top
+        faces.add(new CubeFace(listOfVertices(4, 5, 6, 7), Color.MAGENTA)); // right
     }
 
     private void createProgram() {
