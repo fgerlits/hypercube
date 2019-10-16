@@ -1,5 +1,7 @@
 package ferenc_gerlits.hypercube_viewer;
 
+import static ferenc_gerlits.hypercube_viewer.Utility.EPSILON;
+
 public class FourDimensionalVertex {
     private static final double THRESHOLD = 1e-8;
 
@@ -16,10 +18,10 @@ public class FourDimensionalVertex {
     }
 
     public boolean liesInTheHyperplane(float[] normalVector, float translation) {
-        return Math.abs(scalarProductWith(normalVector) - translation) < THRESHOLD;
+        return Math.abs(scalarProductWith(normalVector) - translation) < EPSILON;
     }
 
-    private float scalarProductWith(float[] vector) {
+    public float scalarProductWith(float[] vector) {
         return (float)(
                 ((double) w) * vector[0] +
                 ((double) x) * vector[1] +
@@ -33,5 +35,15 @@ public class FourDimensionalVertex {
                 scalarProductWith(new float[]{basisVectors[8], basisVectors[9], basisVectors[10], basisVectors[11]}),
                 scalarProductWith(new float[]{basisVectors[12], basisVectors[13], basisVectors[14], basisVectors[15]}));
         // TODO: create matrix class instead of this mess
+    }
+
+    public static FourDimensionalVertex pointInBetween(FourDimensionalVertex aPoint, double aWeight,
+                                                       FourDimensionalVertex bPoint, double bWeight) {
+        double total = aWeight + bWeight;
+        return new FourDimensionalVertex(
+                (float) ((aPoint.w * aWeight + bPoint.w * bWeight) / total),
+                (float) ((aPoint.x * aWeight + bPoint.x * bWeight) / total),
+                (float) ((aPoint.y * aWeight + bPoint.y * bWeight) / total),
+                (float) ((aPoint.z * aWeight + bPoint.z * bWeight) / total));
     }
 }

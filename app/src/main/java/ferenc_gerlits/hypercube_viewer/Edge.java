@@ -8,4 +8,16 @@ class Edge {
         this.from = from;
         this.to = to;
     }
+
+    public Edge reverse() {
+        return new Edge(to, from);
+    }
+
+    public Vertex getFrom() {
+        return from;
+    }
+
+    public Vertex getTo() {
+        return to;
+    }
 }

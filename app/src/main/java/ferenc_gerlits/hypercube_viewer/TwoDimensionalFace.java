@@ -28,7 +28,20 @@ class TwoDimensionalFace {
     }
 
     public List<Edge> intersect(float[] basisVectors, float translation) {
-        return Collections.emptyList();     // TODO
+        List<FourDimensionalVertex> intersections = new ArrayList<>();
+        for (FourDimensionalEdge edge : edges) {
+            intersections.addAll(edge.intersect(basisVectors, translation));
+        }
+
+        if (intersections.size() == 2) {
+            return Collections.singletonList(
+                    new Edge(intersections.get(0).projectedToHyperplane(basisVectors),
+                            intersections.get(1).projectedToHyperplane(basisVectors))
+            );
+        } else {
+            // TODO: log some diagnostics if intersections.size() > 2; should never happen
+            return Collections.emptyList();
+        }
     }
 
     public boolean liesInTheHyperplane(float[] basisVectors, float translation) {

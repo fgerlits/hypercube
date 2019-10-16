@@ -50,4 +50,12 @@ public class HyperCube {
     public List<ThreeDimensionalFace> getFaces() {
         return faces;
     }
+
+    public List<Face> intersect(float[] basisVectors, float translation) {
+        List<Face> intersections = new ArrayList<>();
+        for (ThreeDimensionalFace face : getFaces()) {
+            intersections.addAll(face.intersect(basisVectors, translation));
+        }
+        return intersections;
+    }
 }

@@ -3,7 +3,6 @@ package ferenc_gerlits.hypercube_viewer;
 import android.opengl.GLES20;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HyperCubeDrawer {
@@ -45,14 +44,11 @@ public class HyperCubeDrawer {
 
     }
 
-    public void draw(float[] vPMatrix, float[] normalVector, float translation) {
+    public void draw(float[] vPMatrix, float[] basisVectors, float translation) {
         // Add program to OpenGL ES environment
         GLES20.glUseProgram(program);
 
-        List<Face> intersections = new ArrayList<>();
-        for (ThreeDimensionalFace face : hyperCube.getFaces()) {
-            intersections.addAll(face.intersect(normalVector, translation));
-        }
+        List<Face> intersections = hyperCube.intersect(basisVectors, translation);
 
         int vertexCount = 0;                // TODO
 

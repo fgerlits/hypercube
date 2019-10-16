@@ -17,12 +17,21 @@ class ThreeDimensionalFace {
 
     private void createFaces() {
         faces = new ArrayList<>();
-        faces.add(new TwoDimensionalFace(listOfVertices(0, 1, 2, 3)));
-        faces.add(new TwoDimensionalFace(listOfVertices(4, 5, 6, 7)));
-        faces.add(new TwoDimensionalFace(listOfVertices(0, 1, 4, 5)));
-        faces.add(new TwoDimensionalFace(listOfVertices(2, 3, 6, 7)));
-        faces.add(new TwoDimensionalFace(listOfVertices(0, 2, 4, 6)));
-        faces.add(new TwoDimensionalFace(listOfVertices(1, 3, 5, 7)));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 1, 2, 3))));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(4, 5, 6, 7))));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 1, 4, 5))));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(2, 3, 6, 7))));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 2, 4, 6))));
+        faces.add(new TwoDimensionalFace(reorder(listOfVertices(1, 3, 5, 7))));
+    }
+
+    private static List<FourDimensionalVertex> reorder(List<FourDimensionalVertex> verticesInLexicographicOrder) {
+        List<FourDimensionalVertex> verticesAroundTheFace = new ArrayList<>();
+        verticesAroundTheFace.add(verticesInLexicographicOrder.get(0));
+        verticesAroundTheFace.add(verticesInLexicographicOrder.get(2));
+        verticesAroundTheFace.add(verticesInLexicographicOrder.get(3));
+        verticesAroundTheFace.add(verticesInLexicographicOrder.get(1));
+        return verticesAroundTheFace;
     }
 
     private List<FourDimensionalVertex> listOfVertices(int... indices) {
@@ -37,13 +46,16 @@ class ThreeDimensionalFace {
             List<Edge> edges = new ArrayList<>();
             for (TwoDimensionalFace face : faces) {
                 if (face.liesInTheHyperplane(basisVectors, translation)) {
-                    return Collections.singletonList(new Face(face.verticesProjectedToHyperplane(basisVectors), color));
+                    // if only one face lies in the hyperplane but not the whole 3-face,
+                    // then we'll assume that another 3-face lies completely in the hyperplane
+                    // TODO: think this through and fix it if necessary
+                    return Collections.emptyList();
                 } else {
                     edges.addAll(face.intersect(basisVectors, translation));
                 }
             }
             if (edges.size() >= 3) {
-                return Collections.singletonList(new Face(edges));
+                return Collections.singletonList(new Face(edges, color, 0));
             } else {
                 return Collections.emptyList();
             }
