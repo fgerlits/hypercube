@@ -9,7 +9,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    Cube cube;
+    // TODO: add controls to move the hyperplane around
+    private static final float[] RANDOM_BASIS = new float[]{0.62340519f, 0.34202014f, 0.46984631f, 0.52309907f,
+            -0.22690093f, 0.93969262f, -0.17101007f, -0.19039249f,
+            -0.38302222f, 0, 0.86602540f, -0.32139381f,
+            -0.64278761f, 0, 0, 0.76604444f};
+
+    private static final float TRANSLATION = 0;
 
     public static final String vertexShaderCode =
                     // This matrix member variable provides a hook to manipulate
@@ -35,17 +41,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     //"    color = fragmentColor;" +
                     "}";
 
-    @Override
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        // Set the background frame color
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDepthFunc(GLES20.GL_LESS);
-
-        cube = new Cube();
-    }
-
     private float horizontalAngle = 0;
     private float verticalAngle = 0;
     private float radiansPerPixel = 1;
@@ -56,6 +51,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void dragVertical(float dy) {
         this.verticalAngle += dy * radiansPerPixel;
+    }
+
+    HyperCubeDrawer hyperCube;
+
+    @Override
+    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+        // Set the background frame color
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        GLES20.glDepthFunc(GLES20.GL_LESS);
+
+        hyperCube = new HyperCubeDrawer();
     }
 
     @Override
@@ -69,7 +77,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Note that the order must be projection * view * model.
         float[] mvpMatrix = multiplyMatrix(multiplyMatrix(projectionMatrix, viewMatrix), modelMatrix);
 
-        cube.draw(mvpMatrix);
+        hyperCube.draw(mvpMatrix, RANDOM_BASIS, TRANSLATION);
     }
 
     // Set the position of the model

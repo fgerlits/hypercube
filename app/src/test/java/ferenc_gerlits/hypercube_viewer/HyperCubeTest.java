@@ -33,27 +33,6 @@ public class HyperCubeTest {
         ), faces);
     }
 
-    private void verifyResult(List<ExpectedFace> expected, List<Face> actual) {
-        for (ExpectedFace expectedFace : expected) {
-            int i = findFace(expectedFace, actual);
-            assertNotEquals(expectedFace.getColor() + " face with " + expectedFace.getSize() + " sides not found",
-                    -1, i);
-            actual.remove(i);
-        }
-        assertTrue(actual.size() + " extra faces found", actual.isEmpty());
-    }
-
-    private int findFace(ExpectedFace expectedFace, List<Face> faceList) {
-        for (int i = 0; i < faceList.size(); ++i) {
-            Face face = faceList.get(i);
-            if (face.getVertices().size() == expectedFace.getSize() &&
-                    face.getColor() == expectedFace.getColor()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     @Test
     public void intersect_face_parallel_to_xyz_by_space_parallel_to_xyz_in_the_middle() {
         List<Face> faces = hyperCube.intersect(BASIS_FOR_XYZ_HYPERPLANE, 0.1f);
@@ -116,5 +95,26 @@ public class HyperCubeTest {
         public Color getColor() {
             return color;
         }
+    }
+
+    private void verifyResult(List<ExpectedFace> expected, List<Face> actual) {
+        for (ExpectedFace expectedFace : expected) {
+            int i = findFace(expectedFace, actual);
+            assertNotEquals(expectedFace.getColor() + " face with " + expectedFace.getSize() + " sides not found",
+                    -1, i);
+            actual.remove(i);
+        }
+        assertTrue(actual.size() + " extra faces found", actual.isEmpty());
+    }
+
+    private int findFace(ExpectedFace expectedFace, List<Face> faceList) {
+        for (int i = 0; i < faceList.size(); ++i) {
+            Face face = faceList.get(i);
+            if (face.getVertices().size() == expectedFace.getSize() &&
+                    face.getColor() == expectedFace.getColor()) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
