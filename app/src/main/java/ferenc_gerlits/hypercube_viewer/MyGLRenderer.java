@@ -9,12 +9,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
     // TODO: add controls to move the hyperplane around
-    private static final float[] RANDOM_BASIS = new float[]{0.62340519f, 0.34202014f, 0.46984631f, 0.52309907f,
-            -0.22690093f, 0.93969262f, -0.17101007f, -0.19039249f,
-            -0.38302222f, 0, 0.86602540f, -0.32139381f,
-            -0.64278761f, 0, 0, 0.76604444f};
+    private static final BasisVectors RANDOM_BASIS = new BasisVectors(
+            new Vector(0.62340519, 0.34202014, 0.46984631, 0.52309907),
+            new Vector(-0.22690093, 0.93969262, -0.17101007, -0.19039249),
+            new Vector(-0.38302222, 0, 0.86602540, -0.32139381),
+            new Vector(-0.64278761, 0, 0, 0.76604444));
 
-    private static final float TRANSLATION = 0;
+    private static final double TRANSLATION = 0;
 
     private float horizontalAngle = 0;
     private float verticalAngle = 0;
@@ -53,7 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Note that the order must be projection * view * model.
         float[] mvpMatrix = multiplyMatrix(multiplyMatrix(projectionMatrix, viewMatrix), modelMatrix);
 
-        hyperCube.draw(mvpMatrix, RANDOM_BASIS, TRANSLATION);
+        hyperCube.draw(mvpMatrix, new Hyperplane(RANDOM_BASIS, TRANSLATION));
     }
 
     // Set the position of the model

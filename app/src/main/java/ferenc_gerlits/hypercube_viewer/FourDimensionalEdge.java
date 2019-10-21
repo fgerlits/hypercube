@@ -12,11 +12,12 @@ class FourDimensionalEdge {
         this.to = to;
     }
 
-    public List<FourDimensionalVertex> intersect(float[] basisVectors, float translation) {
-        float[] normalVector = new float[]{basisVectors[0], basisVectors[1], basisVectors[2], basisVectors[3]};
+    public List<FourDimensionalVertex> intersect(Hyperplane hyperplane) {
+        Vector normalVector = hyperplane.getNormalVector();
         double fromProduct = from.scalarProductWith(normalVector);
         double toProduct = to.scalarProductWith(normalVector);
 
+        double translation = hyperplane.getTranslation();
         if (fromProduct == translation) {               // if the 'to' end is on the hyperplane,
             return Collections.singletonList(from);     // it will be found as the 'from' end of the next edge
 

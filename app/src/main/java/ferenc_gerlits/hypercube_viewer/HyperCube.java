@@ -47,10 +47,10 @@ public class HyperCube {
         return faces;
     }
 
-    public List<Face> intersect(float[] basisVectors, float translation) {
+    public List<Face> intersect(Hyperplane hyperplane) {
         List<Face> intersections = new ArrayList<>();
         for (ThreeDimensionalFace face : getFaces()) {
-            intersections.addAll(face.intersect(basisVectors, translation));
+            intersections.addAll(face.intersect(hyperplane));
         }
         return intersections;
     }

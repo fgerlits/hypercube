@@ -3,20 +3,20 @@ package ferenc_gerlits.hypercube_viewer;
 import static ferenc_gerlits.hypercube_viewer.Utility.EPSILON;
 
 public class Vertex {
-    private float x;
-    private float y;
-    private float z;
+    private double x;
+    private double y;
+    private double z;
 
-    public Vertex(float x, float y, float z) {
+    public Vertex(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
     public int writeToFloatArray(float[] array, int offset) {
-        array[offset++] = x;
-        array[offset++] = y;
-        array[offset++] = z;
+        array[offset++] = (float) x;
+        array[offset++] = (float) y;
+        array[offset++] = (float) z;
         return offset;
     }
 

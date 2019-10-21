@@ -39,20 +39,20 @@ class ThreeDimensionalFace {
         return Utility.listOfElementsAt(vertices, indices);
     }
 
-    public List<Face> intersect(float[] basisVectors, float translation) {
-        if (this.liesInTheHyperplane(basisVectors, translation)) {
-            return this.projectedToHyperplane(basisVectors);
+    public List<Face> intersect(Hyperplane hyperplane) {
+        if (this.liesInTheHyperplane(hyperplane)) {
+            return this.projectedToHyperplane(hyperplane);
         }
         else {
             List<Edge> edges = new ArrayList<>();
             for (TwoDimensionalFace face : faces) {
-                if (face.liesInTheHyperplane(basisVectors, translation)) {
+                if (face.liesInTheHyperplane(hyperplane)) {
                     // if only one face lies in the hyperplane but not the whole 3-face,
                     // then we'll assume that another 3-face lies completely in the hyperplane
                     // TODO: think this through and fix it if necessary
                     return Collections.emptyList();
                 } else {
-                    edges.addAll(face.intersect(basisVectors, translation));
+                    edges.addAll(face.intersect(hyperplane));
                 }
             }
 
@@ -64,20 +64,19 @@ class ThreeDimensionalFace {
         }
     }
 
-    private boolean liesInTheHyperplane(float[] basisVectors, float translation) {
-        float[] normalVector = new float[]{basisVectors[0], basisVectors[1], basisVectors[2], basisVectors[3]};
+    private boolean liesInTheHyperplane(Hyperplane hyperplane) {
         for (FourDimensionalVertex vertex : vertices) {
-            if (! vertex.liesInTheHyperplane(normalVector, translation)) {
+            if (!vertex.liesInTheHyperplane(hyperplane)) {
                 return false;
             }
         }
         return true;
     }
 
-    private List<Face> projectedToHyperplane(float[] basisVectors) {
+    private List<Face> projectedToHyperplane(Hyperplane hyperplane) {
         List<Face> projections = new ArrayList<>();
         for (TwoDimensionalFace face : faces) {
-            projections.add(new Face(face.verticesProjectedToHyperplane(basisVectors), color));
+            projections.add(new Face(face.verticesProjectedToHyperplane(hyperplane), color));
         }
         return projections;
     }

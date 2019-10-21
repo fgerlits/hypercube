@@ -27,16 +27,16 @@ class TwoDimensionalFace {
         }
     }
 
-    public List<Edge> intersect(float[] basisVectors, float translation) {
+    public List<Edge> intersect(Hyperplane hyperplane) {
         List<FourDimensionalVertex> intersections = new ArrayList<>();
         for (FourDimensionalEdge edge : edges) {
-            intersections.addAll(edge.intersect(basisVectors, translation));
+            intersections.addAll(edge.intersect(hyperplane));
         }
 
         if (intersections.size() == 2) {
             return Collections.singletonList(
-                    new Edge(intersections.get(0).projectedToHyperplane(basisVectors),
-                            intersections.get(1).projectedToHyperplane(basisVectors))
+                    new Edge(intersections.get(0).projectedToHyperplane(hyperplane),
+                            intersections.get(1).projectedToHyperplane(hyperplane))
             );
         } else {
             // TODO: log some diagnostics if intersections.size() > 2; should never happen
@@ -44,20 +44,19 @@ class TwoDimensionalFace {
         }
     }
 
-    public boolean liesInTheHyperplane(float[] basisVectors, float translation) {
-        float[] normalVector = new float[]{basisVectors[0], basisVectors[1], basisVectors[2], basisVectors[3]};
+    public boolean liesInTheHyperplane(Hyperplane hyperplane) {
         for (FourDimensionalVertex vertex : vertices) {
-            if (! vertex.liesInTheHyperplane(normalVector, translation)) {
+            if (!vertex.liesInTheHyperplane(hyperplane)) {
                 return false;
             }
         }
         return true;
     }
 
-    public List<Vertex> verticesProjectedToHyperplane(float[] basisVectors) {
+    public List<Vertex> verticesProjectedToHyperplane(Hyperplane hyperplane) {
         List<Vertex> projections = new ArrayList<>();
         for (FourDimensionalVertex vertex : vertices) {
-            projections.add(vertex.projectedToHyperplane(basisVectors));
+            projections.add(vertex.projectedToHyperplane(hyperplane));
         }
         return projections;
     }

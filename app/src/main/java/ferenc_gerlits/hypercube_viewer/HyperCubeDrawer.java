@@ -68,11 +68,11 @@ public class HyperCubeDrawer {
 
     }
 
-    public void draw(float[] vPMatrix, float[] basisVectors, float translation) {
+    public void draw(float[] vPMatrix, Hyperplane hyperplane) {
         // Add program to OpenGL ES environment
         GLES20.glUseProgram(program);
 
-        List<Face> intersections = hyperCube.intersect(basisVectors, translation);
+        List<Face> intersections = hyperCube.intersect(hyperplane);
 
         int numberOfVertices = countTriangles(intersections) * Utility.VERTICES_PER_TRIANGLE;
 

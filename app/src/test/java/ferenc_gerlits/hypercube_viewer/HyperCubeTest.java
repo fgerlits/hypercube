@@ -9,19 +9,20 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class HyperCubeTest {
-    public static final float[] BASIS_FOR_XYZ_HYPERPLANE = new float[]{1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1};
-    public static final float[] BASIS_FOR_DIAGONAL = new float[]{0.5f, 0.5f, 0.5f, 0.5f,
-            0.5f, 0.5f, -0.5f, -0.5f,
-            0.5f, -0.5f, -0.5f, 0.5f,
-            0.5f, -0.5f, 0.5f, -0.5f};
     private HyperCube hyperCube = new HyperCube();
+
+    private static final BasisVectors BASIS_FOR_XYZ_HYPERPLANE = new BasisVectors(new Vector(1, 0, 0, 0),
+            new Vector(0, 1, 0, 0),
+            new Vector(0, 0, 1, 0),
+            new Vector(0, 0, 0, 1));
+    private static final BasisVectors BASIS_FOR_DIAGONAL = new BasisVectors(new Vector(0.5, 0.5, 0.5, 0.5),
+            new Vector(0.5, 0.5, -0.5, -0.5),
+            new Vector(0.5, -0.5, -0.5, 0.5),
+            new Vector(0.5, -0.5, 0.5, -0.5));
 
     @Test
     public void intersect_face_parallel_to_xyz_by_space_parallel_to_xyz_at_the_end() {
-        List<Face> faces = hyperCube.intersect(BASIS_FOR_XYZ_HYPERPLANE, 1);
+        List<Face> faces = hyperCube.intersect(new Hyperplane(BASIS_FOR_XYZ_HYPERPLANE, 1));
         // should be a green cube
         verifyResult(Arrays.asList(
                 new ExpectedFace(4, Color.GREEN),
@@ -35,7 +36,7 @@ public class HyperCubeTest {
 
     @Test
     public void intersect_face_parallel_to_xyz_by_space_parallel_to_xyz_in_the_middle() {
-        List<Face> faces = hyperCube.intersect(BASIS_FOR_XYZ_HYPERPLANE, 0.1f);
+        List<Face> faces = hyperCube.intersect(new Hyperplane(BASIS_FOR_XYZ_HYPERPLANE, 0.1));
         // should be a multi-colored cube
         verifyResult(Arrays.asList(
                 new ExpectedFace(4, Color.BLUE),
@@ -49,7 +50,7 @@ public class HyperCubeTest {
 
     @Test
     public void intersect_face_general_case() {
-        List<Face> faces = hyperCube.intersect(BASIS_FOR_DIAGONAL, 0.2f);
+        List<Face> faces = hyperCube.intersect(new Hyperplane(BASIS_FOR_DIAGONAL, 0.2));
         // should be truncated tetrahedron
         verifyResult(Arrays.asList(
                 new ExpectedFace(3, Color.RED),
@@ -65,7 +66,7 @@ public class HyperCubeTest {
 
     @Test
     public void intersect_face_by_diagonal_through_the_origin() {
-        List<Face> faces = hyperCube.intersect(BASIS_FOR_DIAGONAL, 0);
+        List<Face> faces = hyperCube.intersect(new Hyperplane(BASIS_FOR_DIAGONAL, 0));
         // should be an octahedron
         verifyResult(Arrays.asList(
                 new ExpectedFace(3, Color.RED),
