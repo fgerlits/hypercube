@@ -12,7 +12,30 @@ public class HyperCubeDrawer {
     public static final int COLORS_PER_VERTEX = 3;  // red, green, blue
     public static final int SIZE_OF_FLOAT = 4;
 
-    public static int[] PLUS_OR_MINUS_ONE = {-1, 1};
+    private static final String vertexShaderCode =
+            // This matrix member variable provides a hook to manipulate
+            // the coordinates of the objects that use this vertex shader
+            "uniform mat4 uMVPMatrix;" +
+                    "attribute vec4 vPosition;" +
+                    "attribute vec4 vColor;" +
+                    "varying vec4 fragmentColor;" +
+                    "void main() {" +
+                    // the matrix must be included as a modifier of gl_Position
+                    // Note that the uMVPMatrix factor *must be first* in order
+                    // for the matrix multiplication product to be correct.
+                    "    gl_Position = uMVPMatrix * vPosition;" +
+                    "    fragmentColor = vColor;" +
+                    "}";
+
+    private static final String fragmentShaderCode =
+            "precision mediump float;" +
+                    "varying vec4 fragmentColor;" +
+                    //"out vec4 color; " +
+                    "void main() {" +
+                    "    gl_FragColor = fragmentColor;" +
+                    //"    color = fragmentColor;" +
+                    "}";
+
     private final int vertexStride = COORDS_PER_VERTEX * SIZE_OF_FLOAT;
     private final int colorStride = COLORS_PER_VERTEX * SIZE_OF_FLOAT;
 
@@ -29,18 +52,15 @@ public class HyperCubeDrawer {
     }
 
     private void createProgram() {
-        int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
-                MyGLRenderer.vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER,
-                MyGLRenderer.fragmentShaderCode);
-
         // create empty OpenGL ES Program
         program = GLES20.glCreateProgram();
 
         // add the vertex shader to program
+        int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
         GLES20.glAttachShader(program, vertexShader);
 
         // add the fragment shader to program
+        int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
         GLES20.glAttachShader(program, fragmentShader);
 
         // creates OpenGL ES program executables
@@ -54,7 +74,7 @@ public class HyperCubeDrawer {
 
         List<Face> intersections = hyperCube.intersect(basisVectors, translation);
 
-        int numberOfVertices = countTriangles(intersections) * Face.VERTICES_PER_TRIANGLE;
+        int numberOfVertices = countTriangles(intersections) * Utility.VERTICES_PER_TRIANGLE;
 
         FloatBuffer vertexBuffer = createVertexBuffer(intersections, numberOfVertices);
         createPositionHandle(vertexBuffer);
@@ -161,7 +181,6 @@ public class HyperCubeDrawer {
     }
 
     private void releaseVertexAttribArrays() {
-        // Release the handles
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(colorHandle);
     }

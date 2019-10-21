@@ -7,8 +7,6 @@ public class Face {
     private List<Vertex> vertices;
     private Color color;
 
-    public static final int VERTICES_PER_TRIANGLE = 3;
-
     public Face(List<Vertex> vertices, Color color) {
         if (vertices.size() < 3) {
             throw new IllegalArgumentException("Face constructor called with " + vertices.size() +
@@ -102,7 +100,7 @@ public class Face {
 
     public int writeColorToFloatArray(float[] array, int offset) {
         for (int i = 0; i < numberOfTriangles(); ++i) {
-            for (int j = 0; j < VERTICES_PER_TRIANGLE; ++j) {
+            for (int j = 0; j < Utility.VERTICES_PER_TRIANGLE; ++j) {
                 offset = color.writeToFloatArray(array, offset);
             }
         }

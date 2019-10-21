@@ -3,8 +3,6 @@ package ferenc_gerlits.hypercube_viewer;
 import static ferenc_gerlits.hypercube_viewer.Utility.EPSILON;
 
 public class FourDimensionalVertex {
-    private static final double THRESHOLD = 1e-8;
-
     private float w;
     private float x;
     private float y;

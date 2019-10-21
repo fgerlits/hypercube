@@ -43,10 +43,6 @@ public class HyperCube {
         return Utility.listOfElementsAt(vertices, indices);
     }
 
-    public List<FourDimensionalVertex> getVertices() {
-        return vertices;
-    }
-
     public List<ThreeDimensionalFace> getFaces() {
         return faces;
     }

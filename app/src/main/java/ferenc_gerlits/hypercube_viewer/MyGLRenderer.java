@@ -8,7 +8,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-
     // TODO: add controls to move the hyperplane around
     private static final float[] RANDOM_BASIS = new float[]{0.62340519f, 0.34202014f, 0.46984631f, 0.52309907f,
             -0.22690093f, 0.93969262f, -0.17101007f, -0.19039249f,
@@ -17,41 +16,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final float TRANSLATION = 0;
 
-    public static final String vertexShaderCode =
-                    // This matrix member variable provides a hook to manipulate
-                    // the coordinates of the objects that use this vertex shader
-                    "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "attribute vec4 vColor;" +
-                    "varying vec4 fragmentColor;" +
-                    "void main() {" +
-                    // the matrix must be included as a modifier of gl_Position
-                    // Note that the uMVPMatrix factor *must be first* in order
-                    // for the matrix multiplication product to be correct.
-                    "    gl_Position = uMVPMatrix * vPosition;" +
-                    "    fragmentColor = vColor;" +
-                    "}";
-
-    public static final String fragmentShaderCode =
-                    "precision mediump float;" +
-                    "varying vec4 fragmentColor;" +
-                    //"out vec4 color; " +
-                    "void main() {" +
-                    "    gl_FragColor = fragmentColor;" +
-                    //"    color = fragmentColor;" +
-                    "}";
-
     private float horizontalAngle = 0;
     private float verticalAngle = 0;
     private float radiansPerPixel = 1;
 
-    public void dragHorizontal(float dx) {
-        this.horizontalAngle += dx * radiansPerPixel;
-    }
-
-    public void dragVertical(float dy) {
-        this.verticalAngle += dy * radiansPerPixel;
-    }
+    private float[] projectionMatrix = new float[16];
 
     HyperCubeDrawer hyperCube;
 
@@ -64,6 +33,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthFunc(GLES20.GL_LESS);
 
         hyperCube = new HyperCubeDrawer();
+    }
+
+    @Override
+    public void onSurfaceChanged(GL10 unused, int width, int height) {
+        GLES20.glViewport(0, 0, width, height);
+        radiansPerPixel = (float) (Math.PI / 2 / Math.min(width, height));
+        projectionMatrix = createProjectionMatrix(width, height);
     }
 
     @Override
@@ -133,18 +109,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private float[] multiplyMatrix(float[] left, float[] right) {
-        float[] mvpMatrix = new float[16];
-        Matrix.multiplyMM(mvpMatrix, 0, left, 0, right, 0);
-        return mvpMatrix;
-    }
-
-    private float[] projectionMatrix = new float[16];
-
-    @Override
-    public void onSurfaceChanged(GL10 unused, int width, int height) {
-        GLES20.glViewport(0, 0, width, height);
-        radiansPerPixel = (float) (Math.PI / 2 / Math.min(width, height));
-        projectionMatrix = createProjectionMatrix(width, height);
+        float[] result = new float[16];
+        Matrix.multiplyMM(result, 0, left, 0, right, 0);
+        return result;
     }
 
     // type is either GLES20.GL_VERTEX_SHADER or GLES20.GL_FRAGMENT_SHADER
@@ -155,4 +122,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return shader;
     }
 
+    public void dragHorizontal(float dx) {
+        horizontalAngle += dx * radiansPerPixel;
+    }
+
+    public void dragVertical(float dy) {
+        verticalAngle += dy * radiansPerPixel;
+    }
 }

@@ -17,20 +17,21 @@ class ThreeDimensionalFace {
 
     private void createFaces() {
         faces = new ArrayList<>();
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 1, 2, 3))));
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(4, 5, 6, 7))));
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 1, 4, 5))));
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(2, 3, 6, 7))));
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(0, 2, 4, 6))));
-        faces.add(new TwoDimensionalFace(reorder(listOfVertices(1, 3, 5, 7))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(0, 1, 2, 3))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(4, 5, 6, 7))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(0, 1, 4, 5))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(2, 3, 6, 7))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(0, 2, 4, 6))));
+        faces.add(new TwoDimensionalFace(listOfVertices(reorder(1, 3, 5, 7))));
     }
 
-    private static List<FourDimensionalVertex> reorder(List<FourDimensionalVertex> verticesInLexicographicOrder) {
-        List<FourDimensionalVertex> verticesAroundTheFace = new ArrayList<>();
-        verticesAroundTheFace.add(verticesInLexicographicOrder.get(0));
-        verticesAroundTheFace.add(verticesInLexicographicOrder.get(2));
-        verticesAroundTheFace.add(verticesInLexicographicOrder.get(3));
-        verticesAroundTheFace.add(verticesInLexicographicOrder.get(1));
+    private static int[] reorder(int... verticesInLexicographicOrder) {
+        int[] verticesAroundTheFace = new int[]{
+                verticesInLexicographicOrder[0],
+                verticesInLexicographicOrder[2],
+                verticesInLexicographicOrder[3],
+                verticesInLexicographicOrder[1]
+        };
         return verticesAroundTheFace;
     }
 
@@ -54,6 +55,7 @@ class ThreeDimensionalFace {
                     edges.addAll(face.intersect(basisVectors, translation));
                 }
             }
+
             if (edges.size() >= 3) {
                 return Collections.singletonList(new Face(edges, color, 0));
             } else {
