@@ -1,29 +1,38 @@
 package ferenc_gerlits.hypercube_viewer;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.widget.SeekBar;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-    // TODO: add controls to move the hyperplane around
-    private static final BasisVectors RANDOM_BASIS = new BasisVectors(
-            new Vector(0.62340519, 0.34202014, 0.46984631, 0.52309907),
-            new Vector(-0.22690093, 0.93969262, -0.17101007, -0.19039249),
-            new Vector(-0.38302222, 0, 0.86602540, -0.32139381),
-            new Vector(-0.64278761, 0, 0, 0.76604444));
 
-    private static final double TRANSLATION = 0;
+    private final Context context;
+    private final MyGLSurfaceView surfaceView;
+
+    private double translation = 0;
+
+    private double rotationWX = 0;
+    private double rotationWY = 0;
+    private double rotationWZ = 0;
 
     private float horizontalAngle = 0;
     private float verticalAngle = 0;
+
     private float radiansPerPixel = 1;
 
     private float[] projectionMatrix = new float[16];
 
     HyperCubeDrawer hyperCube;
+
+    public MyGLRenderer(Context context, MyGLSurfaceView surfaceView) {
+        this.context = context;
+        this.surfaceView = surfaceView;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -34,6 +43,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthFunc(GLES20.GL_LESS);
 
         hyperCube = new HyperCubeDrawer();
+
+        attachHandlers();
     }
 
     @Override
@@ -54,7 +65,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Note that the order must be projection * view * model.
         float[] mvpMatrix = multiplyMatrix(multiplyMatrix(projectionMatrix, viewMatrix), modelMatrix);
 
-        hyperCube.draw(mvpMatrix, new Hyperplane(RANDOM_BASIS, TRANSLATION));
+        hyperCube.draw(mvpMatrix, new Hyperplane(
+                BasisVectors.createFromRotations(rotationWX, rotationWY, rotationWZ),
+                translation));
     }
 
     // Set the position of the model
@@ -71,6 +84,81 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 direction[0], direction[1], direction[2],
                 up[0], up[1], up[2]);
         return modelMatrix;
+    }
+
+    // NOTE: this is rather nasty ping-pong code between the SurfaceView and the Renderer,
+    // but this is the only place I could find where both the SurfaceView and the SeekBars are non-null,
+    // and I don't know how to do requestRender() from here.
+    private void attachHandlers() {
+        MainActivity activity = (MainActivity) context;
+
+        activity.getTranslation().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
+                surfaceView.setTranslation(position);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+        });
+
+        activity.getRotateWX().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
+                surfaceView.setRotationWX(position);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+        });
+
+        activity.getRotateWY().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
+                surfaceView.setRotationWY(position);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+        });
+
+        activity.getRotateWZ().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
+                surfaceView.setRotationWZ(position);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // ignore
+            }
+        });
     }
 
     private float[] sphericalToCartesian(float horizontalAngle, float verticalAngle) {
@@ -129,5 +217,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void dragVertical(float dy) {
         verticalAngle += dy * radiansPerPixel;
+    }
+
+    public void setTranslation(double position) {
+        translation = position;
+    }
+
+    public void setRotationWX(double angle) {
+        rotationWX = angle;
+    }
+
+    public void setRotationWY(double angle) {
+        rotationWY = angle;
+    }
+
+    public void setRotationWZ(double angle) {
+        rotationWZ = angle;
     }
 }

@@ -1,22 +1,42 @@
 package ferenc_gerlits.hypercube_viewer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.widget.SeekBar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private GLSurfaceView gLView;
+    private SeekBar translation;
+    private SeekBar rotateWX;
+    private SeekBar rotateWY;
+    private SeekBar rotateWZ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create a GLSurfaceView instance and set it
-        // as the ContentView for this Activity.
-        gLView = new MyGLSurfaceView(this);
-        setContentView(gLView);
-//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+
+        translation = findViewById(R.id.translation);
+        rotateWX = findViewById(R.id.rotateWX);
+        rotateWY = findViewById(R.id.rotateWY);
+        rotateWZ = findViewById(R.id.rotateWZ);
+    }
+
+    public SeekBar getTranslation() {
+        return translation;
+    }
+
+    public SeekBar getRotateWX() {
+        return rotateWX;
+    }
+
+    public SeekBar getRotateWY() {
+        return rotateWY;
+    }
+
+    public SeekBar getRotateWZ() {
+        return rotateWZ;
     }
 }
