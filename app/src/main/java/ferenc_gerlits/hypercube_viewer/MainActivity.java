@@ -3,9 +3,9 @@ package ferenc_gerlits.hypercube_viewer;
 import android.os.Bundle;
 import android.widget.SeekBar;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private SeekBar translation;
     private SeekBar rotateWX;

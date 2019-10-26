@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="#000"
     tools:context=".MainActivity">
 
     <ferenc_gerlits.hypercube_viewer.MyGLSurfaceView
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
-        android:id="@+id/rotateWX"
+        android:id="@+id/rotateWZ"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -43,7 +43,7 @@
         android:progress="500"
         android:progressTint="#00F"
         android:thumbTint="#00D"
-        app:layout_constraintBottom_toTopOf="@+id/rotateWY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
-        android:id="@+id/rotateWZ"
+        android:id="@+id/rotateWX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -73,7 +73,7 @@
         android:progress="500"
         android:progressTint="#00F"
         android:thumbTint="#00D"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rotateWY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
