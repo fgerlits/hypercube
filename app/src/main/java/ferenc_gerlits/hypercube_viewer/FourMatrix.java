@@ -1,5 +1,7 @@
 package ferenc_gerlits.hypercube_viewer;
 
+import androidx.annotation.NonNull;
+
 import java.util.Arrays;
 
 public class FourMatrix {
@@ -83,22 +85,23 @@ public class FourMatrix {
     }
 
     @Override
+    @NonNull
     public String toString() {
-        boolean isFirst = true;
-        String asString = "[";
+        StringBuilder builder = new StringBuilder("[");
         for (int i = 0; i < 4; ++i) {
-            if (isFirst) {
-                asString += "[";
-                isFirst = false;
-            } else {
-                asString += ", [";
+            if (i > 0) {
+                builder.append(", ");
             }
+            builder.append("[");
             for (int j = 0; j < 4; ++j) {
-                asString += elements[i][j] + ", ";
+                if (j > 0) {
+                    builder.append(", ");
+                }
+                builder.append(elements[i][j]);
             }
-            asString += "]";
+            builder.append("]");
         }
-        asString += "]";
-        return asString;
+        builder.append("]");
+        return builder.toString();
     }
 }

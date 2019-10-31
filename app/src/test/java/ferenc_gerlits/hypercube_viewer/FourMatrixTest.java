@@ -85,4 +85,17 @@ public class FourMatrixTest {
                 row(28, 12, 28, 12)),
                 someMatrix.times(someOtherMatrix));
     }
+
+    @Test
+    public void testToString() {
+        assertEquals("[[1.0, 2.0, 3.0, 4.0], " +
+                        "[1.0, 4.0, 9.0, 16.0], " +
+                        "[1.0, 8.0, 27.0, 64.0], " +
+                        "[1.0, 16.0, 81.0, 256.0]]",
+                createMatrix(row(1, 2, 3, 4),
+                        row(1, 4, 9, 16),
+                        row(1, 8, 27, 64),
+                        row(1, 16, 81, 256)).toString()
+        );
+    }
 }
