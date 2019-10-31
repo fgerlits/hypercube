@@ -85,7 +85,7 @@ public class Face {
         return -1;
     }
 
-    public int writeVerticestoFloatArray(float[] array, int offset) {
+    public int writeVerticesToFloatArray(float[] array, int offset) {
         for (int i = 0; i < numberOfTriangles(); ++i) {
             offset = vertices.get(0).writeToFloatArray(array, offset);
             offset = vertices.get(i + 1).writeToFloatArray(array, offset);

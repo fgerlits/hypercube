@@ -95,7 +95,7 @@ public class HyperCubeDrawer {
 
         int offset = 0;
         for (Face face : faces) {
-            offset = face.writeVerticestoFloatArray(vertexBufferData, offset);
+            offset = face.writeVerticesToFloatArray(vertexBufferData, offset);
         }
 
         ByteBuffer bb = ByteBuffer.allocateDirect(vertexBufferData.length * SIZE_OF_FLOAT);
