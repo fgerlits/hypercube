@@ -49,7 +49,7 @@ public class HyperCube {
 
     public List<Face> intersect(Hyperplane hyperplane) {
         List<Face> intersections = new ArrayList<>();
-        for (ThreeDimensionalFace face : getFaces()) {
+        for (ThreeDimensionalFace face : faces) {
             intersections.addAll(face.intersect(hyperplane));
         }
         return intersections;

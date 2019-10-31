@@ -10,7 +10,8 @@ class TwoDimensionalFace {
 
     public TwoDimensionalFace(List<FourDimensionalVertex> vertices) {
         if (vertices.size() < 3) {
-            throw new IllegalArgumentException("Face with only " + vertices.size() + " vertices; must be >= 3");
+            throw new IllegalArgumentException("TwoDimensionalFace constructor called with " + vertices.size() +
+                    " vertices; we need at least three");
         }
 
         this.vertices = vertices;

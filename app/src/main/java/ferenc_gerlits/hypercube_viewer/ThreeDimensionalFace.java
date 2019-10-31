@@ -47,9 +47,9 @@ class ThreeDimensionalFace {
             List<Edge> edges = new ArrayList<>();
             for (TwoDimensionalFace face : faces) {
                 if (face.liesInTheHyperplane(hyperplane)) {
-                    // if only one face lies in the hyperplane but not the whole 3-face,
-                    // then we'll assume that another 3-face lies completely in the hyperplane
-                    // TODO: think this through and fix it if necessary
+                    // if only one 2-face lies in the hyperplane but not the whole 3-face,
+                    // then we ignore it in order to prevent double counting
+                    // FIXME: this causes a hole in the model in some edge cases
                     return Collections.emptyList();
                 } else {
                     edges.addAll(face.intersect(hyperplane));

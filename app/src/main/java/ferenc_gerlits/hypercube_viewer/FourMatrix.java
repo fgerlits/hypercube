@@ -17,9 +17,6 @@ public class FourMatrix {
         for (int i = 0; i < 4; ++i) {
             if (i == coord1 || i == coord2) {
                 elements[i][i] = 1;
-                for (int j = i + 1; j < 4; ++j) {
-                    elements[i][j] = 0;
-                }
             } else {
                 if (firstNonFixedCoord == -1) {
                     elements[i][i] = twoMatrix.get(0, 0);
@@ -38,7 +35,7 @@ public class FourMatrix {
     private static double[][] createBlankElements() {
         double[][] elements = new double[4][];
         for (int i = 0; i < 4; ++i) {
-            elements[i] = new double[4];
+            elements[i] = new double[4];    // array components are automatically initialized to 0.0
         }
         return elements;
     }

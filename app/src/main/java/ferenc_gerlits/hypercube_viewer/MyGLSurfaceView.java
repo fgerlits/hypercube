@@ -7,7 +7,9 @@ import android.view.MotionEvent;
 
 class MyGLSurfaceView extends GLSurfaceView {
 
+    public static final double DISTANCE_OF_VERTICES_FROM_THE_ORIGIN = 2;
     public static final double RIGHT_ANGLE = Math.PI / 2;
+    public static final double HALF_OF_MAX_RANGE_OF_SLIDERS = 500;
 
     private final MyGLRenderer renderer;
 
@@ -18,11 +20,7 @@ class MyGLSurfaceView extends GLSurfaceView {
         setEGLContextClientVersion(2);
 
         renderer = new MyGLRenderer(context, this);
-
-        // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer);
-
-        // Render the view only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
@@ -31,10 +29,6 @@ class MyGLSurfaceView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
-
         float x = e.getX();
         float y = e.getY();
 
@@ -57,7 +51,7 @@ class MyGLSurfaceView extends GLSurfaceView {
     }
 
     public void setTranslation(int position) {
-        renderer.setTranslation(scaleToBetweenPlusAndMinusX(position, 2));
+        renderer.setTranslation(scaleToBetweenPlusAndMinusX(position, DISTANCE_OF_VERTICES_FROM_THE_ORIGIN));
         requestRender();
     }
 
@@ -77,6 +71,6 @@ class MyGLSurfaceView extends GLSurfaceView {
     }
 
     private double scaleToBetweenPlusAndMinusX(int position, double x) {
-        return (position - 500) / 500.0 * x;
+        return (position - HALF_OF_MAX_RANGE_OF_SLIDERS) / HALF_OF_MAX_RANGE_OF_SLIDERS * x;
     }
 }

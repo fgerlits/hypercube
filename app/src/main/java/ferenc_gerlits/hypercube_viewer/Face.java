@@ -38,7 +38,7 @@ public class Face {
     }
 
     private List<Edge> order(List<Edge> edges) {
-        List<Edge> copy = new ArrayList(edges);
+        List<Edge> copy = new ArrayList<>(edges);
         List<Edge> orderedEdges = new ArrayList<>();
 
         Edge latestEdge = copy.get(0);

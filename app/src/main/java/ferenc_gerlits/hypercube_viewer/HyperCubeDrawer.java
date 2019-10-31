@@ -30,14 +30,12 @@ public class HyperCubeDrawer {
     private static final String fragmentShaderCode =
             "precision mediump float;" +
                     "varying vec4 fragmentColor;" +
-                    //"out vec4 color; " +
                     "void main() {" +
                     "    gl_FragColor = fragmentColor;" +
-                    //"    color = fragmentColor;" +
                     "}";
 
-    private final int vertexStride = COORDS_PER_VERTEX * SIZE_OF_FLOAT;
-    private final int colorStride = COLORS_PER_VERTEX * SIZE_OF_FLOAT;
+    private static final int vertexStride = COORDS_PER_VERTEX * SIZE_OF_FLOAT;
+    private static final int colorStride = COLORS_PER_VERTEX * SIZE_OF_FLOAT;
 
     private int program;
     private int positionHandle;
@@ -52,24 +50,19 @@ public class HyperCubeDrawer {
     }
 
     private void createProgram() {
-        // create empty OpenGL ES Program
         program = GLES20.glCreateProgram();
 
-        // add the vertex shader to program
         int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
         GLES20.glAttachShader(program, vertexShader);
 
-        // add the fragment shader to program
         int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
         GLES20.glAttachShader(program, fragmentShader);
 
-        // creates OpenGL ES program executables
         GLES20.glLinkProgram(program);
 
     }
 
     public void draw(float[] vPMatrix, Hyperplane hyperplane) {
-        // Add program to OpenGL ES environment
         GLES20.glUseProgram(program);
 
         List<Face> intersections = hyperCube.intersect(hyperplane);
@@ -97,7 +90,6 @@ public class HyperCubeDrawer {
         return numberOfTriangles;
     }
 
-
     private FloatBuffer createVertexBuffer(List<Face> faces, int numberOfVertices) {
         float[] vertexBufferData = new float[numberOfVertices * COORDS_PER_VERTEX];
 
@@ -106,30 +98,21 @@ public class HyperCubeDrawer {
             offset = face.writeVerticestoFloatArray(vertexBufferData, offset);
         }
 
-        // initialize vertex byte buffer for shape coordinates
-        ByteBuffer bb = ByteBuffer.allocateDirect(
-                vertexBufferData.length * SIZE_OF_FLOAT);
-        // use the device hardware's native byte order
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertexBufferData.length * SIZE_OF_FLOAT);
         bb.order(ByteOrder.nativeOrder());
 
-        // create a floating point buffer from the ByteBuffer
         FloatBuffer vertexBuffer = bb.asFloatBuffer();
-        // add the coordinates to the FloatBuffer
         vertexBuffer.put(vertexBufferData);
-        // set the buffer to read the first coordinate
         vertexBuffer.position(0);
 
         return vertexBuffer;
     }
 
     private void createPositionHandle(FloatBuffer vertexBuffer) {
-        // get handle to vertex shader's vPosition member
         positionHandle = GLES20.glGetAttribLocation(program, "vPosition");
 
-        // Enable a handle to the cube vertices
         GLES20.glEnableVertexAttribArray(positionHandle);
 
-        // Prepare the cube coordinate data
         GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX,
                 GLES20.GL_FLOAT, false,
                 vertexStride, vertexBuffer);
@@ -143,40 +126,29 @@ public class HyperCubeDrawer {
             offset = face.writeColorToFloatArray(colorBufferData, offset);
         }
 
-        // initialize color byte buffer for shape coordinates
-        ByteBuffer cb = ByteBuffer.allocateDirect(
-                colorBufferData.length * SIZE_OF_FLOAT);
-        // use the device hardware's native byte order
+        ByteBuffer cb = ByteBuffer.allocateDirect(colorBufferData.length * SIZE_OF_FLOAT);
         cb.order(ByteOrder.nativeOrder());
 
-        // create a floating point buffer from the ByteBuffer
         FloatBuffer colorBuffer = cb.asFloatBuffer();
-        // add the coordinates to the FloatBuffer
         colorBuffer.put(colorBufferData);
-        // set the buffer to read the first coordinate
         colorBuffer.position(0);
 
         return colorBuffer;
     }
 
     private void createColorHandle(FloatBuffer colorBuffer) {
-        // get handle to vertex shader's vColor member
         colorHandle = GLES20.glGetAttribLocation(program, "vColor");
 
-        // Enable a handle to the cube vertices
         GLES20.glEnableVertexAttribArray(colorHandle);
 
-        // Prepare the cube coordinate data
         GLES20.glVertexAttribPointer(colorHandle, COORDS_PER_VERTEX,
                 GLES20.GL_FLOAT, false,
                 colorStride, colorBuffer);
     }
 
     private void createVPMatrixHandle(float[] vPMatrix) {
-        // get handle to shape's transformation matrix
         vPMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix");
 
-        // Pass the projection and view transformation to the shader
         GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, vPMatrix, 0);
     }
 

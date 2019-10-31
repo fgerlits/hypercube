@@ -86,9 +86,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return modelMatrix;
     }
 
-    // NOTE: this is rather nasty ping-pong code between the SurfaceView and the Renderer,
-    // but this is the only place I could find where both the SurfaceView and the SeekBars are non-null,
-    // and I don't know how to do requestRender() from here.
     private void attachHandlers() {
         MainActivity activity = (MainActivity) context;
 
@@ -162,7 +159,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private float[] sphericalToCartesian(float horizontalAngle, float verticalAngle) {
-        double distance = 10.0;
+        final double distance = 10.0;
 
         return new float[]{
                 (float) (Math.cos(verticalAngle) * Math.sin(horizontalAngle) * distance),

@@ -21,11 +21,15 @@ public class Vertex {
     }
 
     public boolean approximatelyEquals(Vertex other) {
-        if (this == other) return true;
-        if (other == null) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null) {
+            return false;
+        }
 
-        return Math.abs(other.x - x) +
-                Math.abs(other.y - y) +
+        return Math.abs(other.x - x) < EPSILON &&
+                Math.abs(other.y - y) < EPSILON &&
                 Math.abs(other.z - z) < EPSILON;
     }
 }
