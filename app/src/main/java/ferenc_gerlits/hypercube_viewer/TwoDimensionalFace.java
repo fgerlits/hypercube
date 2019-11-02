@@ -46,12 +46,7 @@ class TwoDimensionalFace {
     }
 
     public boolean liesInTheHyperplane(Hyperplane hyperplane) {
-        for (FourDimensionalVertex vertex : vertices) {
-            if (!vertex.liesInTheHyperplane(hyperplane)) {
-                return false;
-            }
-        }
-        return true;
+        return Utility.allVerticesLieInTheHyperplane(vertices, hyperplane);
     }
 
     public List<Vertex> verticesProjectedToHyperplane(Hyperplane hyperplane) {

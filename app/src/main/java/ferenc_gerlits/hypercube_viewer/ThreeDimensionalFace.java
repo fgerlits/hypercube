@@ -65,12 +65,7 @@ class ThreeDimensionalFace {
     }
 
     private boolean liesInTheHyperplane(Hyperplane hyperplane) {
-        for (FourDimensionalVertex vertex : vertices) {
-            if (!vertex.liesInTheHyperplane(hyperplane)) {
-                return false;
-            }
-        }
-        return true;
+        return Utility.allVerticesLieInTheHyperplane(vertices, hyperplane);
     }
 
     private List<Face> projectedToHyperplane(Hyperplane hyperplane) {

@@ -17,4 +17,13 @@ public class Utility {
         return list;
     }
 
+    public static boolean allVerticesLieInTheHyperplane(List<FourDimensionalVertex> vertices,
+                                                        Hyperplane hyperplane) {
+        for (FourDimensionalVertex vertex : vertices) {
+            if (!vertex.liesInTheHyperplane(hyperplane)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
