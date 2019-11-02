@@ -11,6 +11,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
+    public static final double DISTANCE_OF_VERTICES_FROM_THE_ORIGIN = 2;
+    public static final double RIGHT_ANGLE = Math.PI / 2;
+    public static final double HALF_OF_MAX_RANGE_OF_SLIDERS = 500;
+
     private final Context context;
     private final MyGLSurfaceView surfaceView;
 
@@ -92,70 +96,62 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         activity.getTranslation().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                surfaceView.setTranslation(position);
+                translation = scaleToBetweenPlusAndMinusX(position, DISTANCE_OF_VERTICES_FROM_THE_ORIGIN);
+                surfaceView.requestRender();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
         });
 
         activity.getRotateWX().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                surfaceView.setRotationWX(position);
+                rotationWX = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
+                surfaceView.requestRender();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
         });
 
         activity.getRotateWY().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                surfaceView.setRotationWY(position);
+                rotationWY = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
+                surfaceView.requestRender();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
         });
 
         activity.getRotateWZ().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                surfaceView.setRotationWZ(position);
+                rotationWZ = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
+                surfaceView.requestRender();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // ignore
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
         });
+    }
+
+    private static double scaleToBetweenPlusAndMinusX(int position, double x) {
+        return (position - HALF_OF_MAX_RANGE_OF_SLIDERS) / HALF_OF_MAX_RANGE_OF_SLIDERS * x;
     }
 
     private float[] sphericalToCartesian(float horizontalAngle, float verticalAngle) {
@@ -214,21 +210,5 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void dragVertical(float dy) {
         verticalAngle += dy * radiansPerPixel;
-    }
-
-    public void setTranslation(double position) {
-        translation = position;
-    }
-
-    public void setRotationWX(double angle) {
-        rotationWX = angle;
-    }
-
-    public void setRotationWY(double angle) {
-        rotationWY = angle;
-    }
-
-    public void setRotationWZ(double angle) {
-        rotationWZ = angle;
     }
 }
