@@ -3,6 +3,7 @@ package ferenc_gerlits.hypercube_viewer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FourMatrixTest {
 
@@ -11,37 +12,41 @@ public class FourMatrixTest {
 
     @Test
     public void fromTwoMatrixWithFixedCoordinates() {
-        assertEquals(createMatrix(
-                row(1, 0, 0, 0),
-                row(0, 1, 0, 0),
-                row(0, 0, SQRT_3_PER_2, -0.5),
-                row(0, 0, 0.5, SQRT_3_PER_2)),
+        assertTrue(matricesAreEqual(
+                createMatrix(
+                        row(1, 0, 0, 0),
+                        row(0, 1, 0, 0),
+                        row(0, 0, SQRT_3_PER_2, -0.5),
+                        row(0, 0, 0.5, SQRT_3_PER_2)),
                 FourMatrix.fromTwoMatrixWithFixedCoordinates(TwoMatrix.rotationBy(Math.PI / 6), 0, 1)
-        );
+        ));
 
-        assertEquals(createMatrix(
-                row(SQRT_2_PER_2, 0, 0, -SQRT_2_PER_2),
-                row(0, 1, 0, 0),
-                row(0, 0, 1, 0),
-                row(SQRT_2_PER_2, 0, 0, SQRT_2_PER_2)),
+        assertTrue(matricesAreEqual(
+                createMatrix(
+                        row(SQRT_2_PER_2, 0, 0, -SQRT_2_PER_2),
+                        row(0, 1, 0, 0),
+                        row(0, 0, 1, 0),
+                        row(SQRT_2_PER_2, 0, 0, SQRT_2_PER_2)),
                 FourMatrix.fromTwoMatrixWithFixedCoordinates(TwoMatrix.rotationBy(Math.PI / 4), 1, 2)
-        );
+        ));
 
-        assertEquals(createMatrix(
-                row(1, 0, 0, 0),
-                row(0, 0.5, -SQRT_3_PER_2, 0),
-                row(0, SQRT_3_PER_2, 0.5, 0),
-                row(0, 0, 0, 1)),
+        assertTrue(matricesAreEqual(
+                createMatrix(
+                        row(1, 0, 0, 0),
+                        row(0, 0.5, -SQRT_3_PER_2, 0),
+                        row(0, SQRT_3_PER_2, 0.5, 0),
+                        row(0, 0, 0, 1)),
                 FourMatrix.fromTwoMatrixWithFixedCoordinates(TwoMatrix.rotationBy(Math.PI / 3), 0, 3)
-        );
+        ));
 
-        assertEquals(createMatrix(
-                row(0, -1, 0, 0),
-                row(1, 0, 0, 0),
-                row(0, 0, 1, 0),
-                row(0, 0, 0, 1)),
+        assertTrue(matricesAreEqual(
+                createMatrix(
+                        row(0, -1, 0, 0),
+                        row(1, 0, 0, 0),
+                        row(0, 0, 1, 0),
+                        row(0, 0, 0, 1)),
                 FourMatrix.fromTwoMatrixWithFixedCoordinates(TwoMatrix.rotationBy(Math.PI / 2), 2, 3)
-        );
+        ));
     }
 
     private FourMatrix createMatrix(double[]... rows) {
@@ -52,6 +57,10 @@ public class FourMatrixTest {
         return elements;
     }
 
+    private boolean matricesAreEqual(FourMatrix first, FourMatrix second) {
+        return first.approximatelyEquals(second);
+    }
+
     @Test
     public void times() {
         FourMatrix unitMatrix = createMatrix(
@@ -60,7 +69,7 @@ public class FourMatrixTest {
                 row(0, 0, 1, 0),
                 row(0, 0, 0, 1));
 
-        assertEquals(unitMatrix, unitMatrix.times(unitMatrix));
+        assertTrue(matricesAreEqual(unitMatrix, unitMatrix.times(unitMatrix)));
 
         FourMatrix someMatrix = createMatrix(
                 row(1, 1, 1, 1),
@@ -74,16 +83,18 @@ public class FourMatrixTest {
                 row(3, 0, 3, 0),
                 row(4, 0, 4, 0));
 
-        assertEquals(someMatrix, someMatrix.times(unitMatrix));
+        assertTrue(matricesAreEqual(someMatrix, someMatrix.times(unitMatrix)));
 
-        assertEquals(someOtherMatrix, unitMatrix.times(someOtherMatrix));
+        assertTrue(matricesAreEqual(someOtherMatrix, unitMatrix.times(someOtherMatrix)));
 
-        assertEquals(createMatrix(
-                row(7, 3, 7, 3),
-                row(14, 6, 14, 6),
-                row(21, 9, 21, 9),
-                row(28, 12, 28, 12)),
-                someMatrix.times(someOtherMatrix));
+        assertTrue(matricesAreEqual(
+                createMatrix(
+                        row(7, 3, 7, 3),
+                        row(14, 6, 14, 6),
+                        row(21, 9, 21, 9),
+                        row(28, 12, 28, 12)),
+                someMatrix.times(someOtherMatrix)
+        ));
     }
 
     @Test

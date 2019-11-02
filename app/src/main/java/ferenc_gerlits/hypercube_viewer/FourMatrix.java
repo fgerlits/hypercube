@@ -2,8 +2,6 @@ package ferenc_gerlits.hypercube_viewer;
 
 import androidx.annotation.NonNull;
 
-import java.util.Arrays;
-
 public class FourMatrix {
     private double[][] elements;
 
@@ -62,20 +60,17 @@ public class FourMatrix {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(elements);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FourMatrix that = (FourMatrix) o;
+    public boolean approximatelyEquals(FourMatrix other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null) {
+            return false;
+        }
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
-                double diff = this.elements[i][j] - that.elements[i][j];
+                double diff = this.elements[i][j] - other.elements[i][j];
                 if (Math.abs(diff) >= Utility.EPSILON) {
                     return false;
                 }
