@@ -1,3 +1,111 @@
 <resources>
     <string name="app_name">Hypercube Viewer</string>
+    <string name="menu_reset">Reset</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_about">About</string>
+    <string name="help_text"><![CDATA[
+<p>
+This app lets you visualize a hypercube (four-dimensional cube), by showing you its intersection with three-dimensional spaces.  Most other hypercube apps show you projections instead of intersections; that method can show the structure of vertices and edges, but it messes up the shape of the hypercube.
+</p>
+
+
+<h4>1. What is a four-dimensional cube?</h4>
+
+<p>
+The best way to think about a four-dimensional object is to imagine the same object in one, two, and three dimensions first.  If we know how to get from the one-dimensional object to the two-dimensional object, and we can get from the two-dimensional object to the three-dimensional object in the same way, then we simply need to do the same thing again to the three-dimensional object, and we will get to the four-dimensional object.  Let\'s see how this works for the cube.
+</p>
+
+<p>
+To start with,
+<ul>
+    <li>&nbsp;a zero-dimensional object is a point</li>
+    <li>&nbsp;a one-dimensional object is something that lies inside a straight line</li>
+    <li>&nbsp;a two-dimensional object is something that lies inside a flat plane</li>
+    <li>&nbsp;a three-dimensional object is something that lies inside a (three-dimensional) space like ours.</li>
+</ul>
+</p>
+
+<p>
+First, a one-dimensional cube is a segment.  It has two zero-dimensional faces, the two endpoints.
+</p>
+
+<p>
+Next, if we move our one-dimensional cube (or segment) in a direction perpendicular to the line it lies in, we get a two-dimensional cube: a square.  It has four one-dimensional faces (in this dimension, they are called sides); two of the faces are the segment in its original position and its final position; the other two faces are traced out by the movement of the two zero-dimensional faces of the original segment.
+</p>
+
+<p>
+Next, if we move our two-dimensional cube (or square) in a direction perpendicular to the plane it lies in, we get a three-dimensional cube (which is what we normally call a cube).  It has six two-dimensional faces: two of the faces are the square in its original position and its final position; the other four faces are traced out by the movement of the four one-dimensional faces of the original square.
+</p>
+
+<p>
+Finally, if we move our three-dimensional cube in a direction perpendicular to the space it lies in (this is the difficult part to imagine, but it should work in the same way as in the lower dimensions), we get a four-dimensional cube.  It has eight three-dimensional faces: two of the faces are the cube in its original position and its final position; the other six faces are traced out by the movement of the six two-dimensional faces of the original cube.
+</p>
+
+
+<h4>2. What does this app do?</h4>
+
+<p>
+This app was inspired by the book <a href="https://manybooks.net/titles/abbottedetext95flat10a.html">Flatland by Edwin A. Abbott</a>.  The story is about a society of flat shapes: triangles, squares, hexagons etc., who live in a horizontal two-dimensional plane called Flatland.  They can only move and see within their plane; they know what north, south, east and west mean, but they have no conception of up or down.  The narrator of the story is a Square, who is visited by a Cube* one day.  The Square does not understand what a cube is.  In the book, the Square explains to the Cube how their society works, and the Cube tries to explain to the Square what the third dimension is.
+</p>
+
+<p>
+<small>* in the book, the visitor is a Sphere, but spheres are boring</small>
+</p>
+
+<p>
+To show himself to the Square, the Cube first moves up and down through Flatland face-first.  What the Square sees is another square (the horizontal intersection of the Cube with Flatland) suddenly appearing out of nowhere, then staying put for a while, and then disappearing again.
+</p>
+
+<p>
+Next, the Cube rotates itself and moves up and down edge-first.  Now the Square sees a line appearing out of nowhere, which turns into a long narrow rectangle, which gets wider and wider for a while, then it gets narrower and narrower again, until it turns back into a line and then it disappears.
+</p>
+
+<p>
+Finally, the Cube rotates itself once more, and moves up and down vertex-first.  Now the Square sees a point appearing out of nowhere, which turns into a small triangle, which gets larger and larger for a while, then its vertices get cut off and it turns into a hexagon.  When the Cube is exactly half way through, the Square can see the Cube\'s horizontal intersection with Flatland as a regular hexagon.  As the Cube moves further, the hexagon turns back into a triangle, which then gets smaller and smaller, and finally the triangle turns into a point and disappears.
+</p>
+
+<p>
+This app does the same thing one dimension higher.  Instead of a Cube visiting people who live in a two-dimensional plane, it shows a Hypercube (four-dimensional cube) visiting people, like you and me, who live in a three-dimensional space.
+</p>
+
+
+<h4>3. How does it work?</h4>
+
+<p>
+When the app starts, the Hypercube is sitting face-first exactly half way through our three-dimensional space.  We can see the "horizontal" intersection of the Hypercube with our space, which is a three-dimensional cube.  This is similar to what happened in Flatland: the intersection of the Cube in the same position was a square.
+</p>
+
+<p>
+You can move the cube around in our space by dragging it with your fingers.  It has six colored faces, which are the intersections of our space with six of the eight colored faces of the Hypercube.  Each face of the Hypercube has a different color.
+</p>
+
+<p>
+You can move the Hypercube "up" and "down" in the direction of the fourth dimension using the red slider.  This direction is perpendicular to all our three coordinate axes x, y and z, and is just as difficult for us to imagine as our up and down are to the people of Flatland.
+</p>
+
+<p>
+To make more interesting shapes, you can rotate the Hypercube using the three blue sliders.  These sliders rotate the Hypercube around the pairs of axes xy, xz and yz, respectively.  As you can rotate a cube in three-dimensional space around any one axis, you can also rotate a hypercube in four-dimensional space around any pair of axes.
+</p>
+
+<p>
+Try to set the blue sliders to make the Hypercube move through our space two-dimensional-face-first, edge-first, and vertex-first!  It takes some thinking, but it\'s not difficult, to find out how to set the blue sliders for each of these cases.  Then move the Hypercube "up" and "down" using the red slider, and see how the intersection of the Hypercube with our three-dimensional space changes.  What is the intersection exactly half way through?
+</p>
+
+<p>
+What is the most interesting shape you can make?  What is the largest possible number of faces?  What is the largest possible number of vertices?
+</p>
+]]></string>
+    <string name="about_text"><![CDATA[
+<p>
+Author: Ferenc Gerlits
+</p>
+
+<p>
+Contact: <a href="mailto:hypercube.viewer.app@gmail.com">hypercube.viewer.app@gmail.com</a>
+</p>
+
+<p>
+Hypercube viewer is free software.  You can browse or download the source code from its <a href="https://github.com/fgerlits/hypercube">Github page</a>.
+</p>
+]]></string>
 </resources>

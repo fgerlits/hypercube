@@ -211,4 +211,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void dragVertical(float dy) {
         verticalAngle += dy * radiansPerPixel;
     }
+
+    public void resetXYZ() {
+        horizontalAngle = 0;
+        verticalAngle = 0;
+    }
 }

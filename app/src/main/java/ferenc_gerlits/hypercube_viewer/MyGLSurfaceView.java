@@ -10,7 +10,7 @@ class MyGLSurfaceView extends GLSurfaceView {
     private final MyGLRenderer renderer;
 
     public MyGLSurfaceView(Context context, AttributeSet attributes) {
-        super(context);
+        super(context, attributes);
 
         // Create an OpenGL ES 2.0 context
         setEGLContextClientVersion(2);
@@ -44,5 +44,9 @@ class MyGLSurfaceView extends GLSurfaceView {
         previousX = x;
         previousY = y;
         return true;
+    }
+
+    public void resetXYZ() {
+        renderer.resetXYZ();
     }
 }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hiperkocka-nézegető</string>
+    <string name="menu_reset">Alapállapot</string>
+    <string name="menu_about">Névjegy</string>
+    <string name="menu_help">Súgó</string>
+    <string name="help_text"><![CDATA[
+<p>
+Ezzel az alkalmazással egy hiperkocka (négydimenziós kocka) háromdimenziós metszeteit lehet megnézni, ami segíthet elképzelni, hogy milyen egy hiperkocka a valóságban.  Más hiperkocka-alkalmazások általában metszet helyett vetületet használnak, amiben jól látszanak a csúcsok és élek, de a hiperkocka alakja teljesen deformálódik.
+</p>
+
+
+<h4>1. Mi az, hogy négydimenzós kocka?</h4>
+
+<p>
+Egy négydimenzós dolgot úgy lehet a legjobban elképzelni, ha először megnézzük, hogy néz ki ugyanaz egy, két, és három dimenzióban.  Ha tudjuk, hogy kell az egydimenziós dologból létrehozni a kétdimenziósat, és ugyanúgy létre tudjuk hozni a kétdimenziósból a háromdimenziósat, akkor ezt alkalmazhatjuk még egyszer a háromdimenziós dologra, és máris megkapjuk a dolog négydimenziós változatát.  Nézzük, hogy megy ez a kocka esetén.
+</p>
+
+<p>
+Először is,
+<ul>
+    <li>&nbsp;egyetlen nulladimenziós dolog van, a pont</li>
+    <li>&nbsp;egydimenziós valami, ha egy egyenes vonal része</li>
+    <li>&nbsp;kétdimenziós egy dolog, ha egy síkban fekszik</li>
+    <li>&nbsp;háromdimenziós valami, ami egy háromdimenziós térben fekszik, például abban, amiben mi is élünk.</li>
+</ul>
+</p>
+
+<p>
+Az egydimenziós kocka az egy szakasz.  Két nulladimenziós lapja van: a két végpontja.
+</p>
+
+<p>
+Ha az egydimenziós kockánkat (vagyis szakaszt) elmozgatjuk merőlegesen saját magára, akkor kapunk egy kétdimenziós kockát: egy négyzetet.  A kétdimenziós kockának négy egydimenziós lapja van (ezeket ebben a dimenzióban oldalaknak hívjuk): ebből kettő az eredeti szakasz és a szakasz a mozgatás utáni helyén, a másik kettőt pedig a szakasz nulladimenziós lapjai rajzolják ki a mozgatás közben.
+</p>
+
+<p>
+Ha most a kétdimenziós kockánkat (vagyis négyzetet) elmozgatjuk merőlegesen saját magára, akkor kapunk egy háromdimenziós kockát (ez az, amit általában kockának hívunk).  A háromdimenziós kockának hat kétdimenziós lapja van: ebből kettő az eredeti négyzet és a négyzet a mozgatás utáni helyén, a másik négyet pedig a négyzet kétdimenziós lapjai rajzolják ki a mozgatás közben.
+</p>
+
+<p>
+Végül, ha a háromdimenziós kockánkat elmozgatjuk saját magára merőlegesen (ezt nehéz elképzelni, de elvben ugyanúgy működik, mint az alacsonyabb dimenziókban), akkor kapunk egy négydimenziós kockát.  A négydimenziós kockának nyolc háromdimenziós lapja van: ebből kettő az eredeti kocka és a kocka a mozgatás utáni helyén, a másik hatot pedig a kocka (kétdimenziós) lapjai rajzolják ki mozgatás közben.
+</p>
+
+
+<h4>2. Mit csinál ez az alkalmazás?</h4>
+
+<p>
+Ezt az alkalmazást <a href="http://mek.oszk.hu/01900/01984/">Edwin A. Abbott Síkföld című regénye</a> ihlette.  A könyv egy lapos világban játszódik, ahol háromszögek, négyszögek, hatszögek stb élnek.  Síkföld lakói csak a saját kétdimenziós világukon belül tudnak mozogni, és nem is látnak ki belőle.  Tudják, hogy merre van észak, dél, kelet és nyugat, de fogalmuk sincs róla, hogy mi az, hogy fel vagy le.  A főszereplő egy Négyzet, akit egy nap meglátogat egy Kocka*.  A Négyzet még sohasem látott kockát, és el sem tudja képzelni, hogy nézhet ki.  A könyvben a Négyzet elmeséli a Kockának, hogy hogyan működik Síkföld társadalma, és a Kocka megpróbálja megmutatni a Négyzetnek, hogy mi az a harmadik dimenzió.
+</p>
+
+<p>
+<small>* a könyvben a látogató egy Gömb, de a gömbök unalmasak</small>
+</p>
+
+<p>
+A Kocka először saját lapjával előre mozog fel-le Síkföld síkján keresztül.  A Négyzet egy másik négyzetet lát, ami egyszercsak megjelenik a semmiből: ez a Kocka metszete Síkföld vízszintes síkjával.  Ez a másik négyzet egy ideig nem mozdul, aztán hirtelen megint eltűnik.
+</p>
+
+<p>
+Ezután a Kocka elfordul, és élével előre mozog fel-le.  Most a Négyzet egy szakaszt lát a semmiből megjelenni, ami utána átváltozik egy keskeny téglalappá, ami egyre szélesedik egy ideig, azután újra keskenyedni kezd, végül megint szakasz lesz belőle, és utána eltűnik.
+</p>
+
+<p>
+Végül a Kocka megint fordul egyet, és most csúcsával előre mozog fel-le.  A Négyzet most egy pontot lát feltűnni a semmiből, ami utána átváltozik egy kis háromszöggé, ami egyre nagyobb lesz.  Egy idő után a háromszög sarkai levágódnak, és hatszög lesz belőle; amikor a Kocka éppen a közepénél tart, a Síkföldben látható metszete egy szabályos hatszög.  Ezután a hatszög visszaalakul háromszöggé, ami egyre kisebb lesz, végül egy pont lesz belőle, és eltűnik.
+</p>
+
+<p>
+Ez az alkalmazás ugyanezt csinálja egy dimenzióval feljebb.  Itt nem egy Kocka látogat meg kétdimenziós síkban élő lényeket, hanem egy Hiperkocka (négydimenziós kocka) látogat meg minket a mi háromdimenziós terünkben, és mutatja meg a különböző irányból vett metszeteit a terünkkel.
+</p>
+
+
+<h4>3. Hogy működik az alkalmazás?</h4>
+
+<p>
+Induláskor a Hiperkocka lapjával előre áll, és éppen félúton van a háromdimenziós terünkön keresztül.  A metszete a terünkkel egy háromdimenziós kocka, pont úgy, ahogy Síkföldön a Kocka metszete ugyanebben a helyzetben egy négyzet volt.
+</p>
+
+<p>
+A kockát a háromdimenziós terünkön belül az érintőképernyőn megszokott módon lehet az ujjunkkal forgatni.  Hat színes (kétdimenziós) lapja van: minden lap a Hiperkocka egy-egy (háromdimenziós) lapjának a metszete a mi terünkkel.  A Hiperkocka mind a nyolc lapja különböző színű.
+</p>
+
+<p>
+A Hiperkockát "fel" és "le" lehet mozgatni a negyedik dimenzió irányában a piros csúszka segítségével.  Ez az irány merőleges mind a három (x, y, z) koordinátatengelyre a három dimenziós térben, és ugyanolyan nehéz elképzelnünk, mint amennyire a síkföldieknek nehéz elképzelni, hogy mi az a fel és a le.
+</p>
+
+<p>
+Érdekesebb formákat kapunk, ha a Hiperkockát a negyedik dimenzióban forgatjuk a három kék csúszka segítségével.  Ez a három csúszka az xy, xz és yz koordinátatengely-párok körül forgatja a Hiperkockát.  Ahogy három dimenzióban bármelyik koordinátatengely körül lehet forgatni egy kockát, ugyanúgy négy dimenzióban bármelyik két koordinátatengely párja körül lehet forgatni egy hiperkockát.
+</p>
+
+<p>
+Próbáld ki, mi történik, ha a Hiperkockát kétdimenziós lapjával előre, élével előre, vagy csúcsával előre mozgatod fel-le a háromdimenziós terünkön keresztül!  Nem nyilvánvaló, de nem is túl nehéz kitalálni, hogy hogyan kell ehhez beállítani a kék csúszkákat; utána a piros csúszkával lehet a Hiperkockát "fel" és "le" mozgatni.  Mi lesz a Hiperkocka metszete a terünkkel, amikor éppen félúton van?
+</p>
+
+<p>
+Mi a legérdesebb forma, amit létre tudsz hozni a Hiperkocka metszeteként?  Hogyan lehet a legtöbb lappal vagy a legtöbb csúccsal rendelkező metszetet létrehozni?
+</p>
+]]></string>
+    <string name="about_text"><![CDATA[
+<p>
+Szerző: Gerlits Ferenc
+</p>
+
+<p>
+Kapcsolat: <a href="mailto:hypercube.viewer.app@gmail.com">hypercube.viewer.app@gmail.com</a>
+</p>
+
+<p>
+A Hiperkocka-nézegető szabad szoftver.  A forráskód szabadon olvasható vagy letölthető a <a href="https://github.com/fgerlits/hypercube">Github-ról</a>.
+</p>
+]]></string>
+</resources>

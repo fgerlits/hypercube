@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="ferenc_gerlits.hypercube_viewer.ShowTextActivity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
