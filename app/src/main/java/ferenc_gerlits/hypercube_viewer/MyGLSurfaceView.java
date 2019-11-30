@@ -9,19 +9,19 @@ class MyGLSurfaceView extends GLSurfaceView {
 
     private final MyGLRenderer renderer;
 
+    private float previousX;
+    private float previousY;
+
     public MyGLSurfaceView(Context context, AttributeSet attributes) {
         super(context, attributes);
 
         // Create an OpenGL ES 2.0 context
         setEGLContextClientVersion(2);
 
-        renderer = new MyGLRenderer(context, this);
+        renderer = new MyGLRenderer();
         setRenderer(renderer);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
-
-    private float previousX;
-    private float previousY;
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
@@ -48,5 +48,21 @@ class MyGLSurfaceView extends GLSurfaceView {
 
     public void resetXYZ() {
         renderer.resetXYZ();
+    }
+
+    public void setTranslation(double translation) {
+        renderer.setTranslation(translation);
+    }
+
+    public void setRotationWX(double rotation) {
+        renderer.setRotationWX(rotation);
+    }
+
+    public void setRotationWY(double rotation) {
+        renderer.setRotationWY(rotation);
+    }
+
+    public void setRotationWZ(double rotation) {
+        renderer.setRotationWZ(rotation);
     }
 }

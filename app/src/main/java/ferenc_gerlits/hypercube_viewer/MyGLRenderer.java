@@ -1,22 +1,13 @@
 package ferenc_gerlits.hypercube_viewer;
 
-import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.widget.SeekBar;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
-
-    public static final double DISTANCE_OF_VERTICES_FROM_THE_ORIGIN = 2;
-    public static final double RIGHT_ANGLE = Math.PI / 2;
-    public static final double HALF_OF_MAX_RANGE_OF_SLIDERS = 500;
-
-    private final Context context;
-    private final MyGLSurfaceView surfaceView;
 
     private double translation = 0;
 
@@ -33,11 +24,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     HyperCubeDrawer hyperCube;
 
-    public MyGLRenderer(Context context, MyGLSurfaceView surfaceView) {
-        this.context = context;
-        this.surfaceView = surfaceView;
-    }
-
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         // Set the background frame color
@@ -47,8 +33,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthFunc(GLES20.GL_LESS);
 
         hyperCube = new HyperCubeDrawer();
-
-        attachHandlers();
     }
 
     @Override
@@ -88,70 +72,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 direction[0], direction[1], direction[2],
                 up[0], up[1], up[2]);
         return modelMatrix;
-    }
-
-    private void attachHandlers() {
-        MainActivity activity = (MainActivity) context;
-
-        activity.getTranslation().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                translation = scaleToBetweenPlusAndMinusX(position, DISTANCE_OF_VERTICES_FROM_THE_ORIGIN);
-                surfaceView.requestRender();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
-        });
-
-        activity.getRotateWX().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                rotationWX = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
-                surfaceView.requestRender();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
-        });
-
-        activity.getRotateWY().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                rotationWY = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
-                surfaceView.requestRender();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
-        });
-
-        activity.getRotateWZ().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int position, boolean byUser) {
-                rotationWZ = scaleToBetweenPlusAndMinusX(position, RIGHT_ANGLE);
-                surfaceView.requestRender();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { /* ignore */ }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { /* ignore */ }
-        });
-    }
-
-    private static double scaleToBetweenPlusAndMinusX(int position, double x) {
-        return (position - HALF_OF_MAX_RANGE_OF_SLIDERS) / HALF_OF_MAX_RANGE_OF_SLIDERS * x;
     }
 
     private float[] sphericalToCartesian(float horizontalAngle, float verticalAngle) {
@@ -215,5 +135,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void resetXYZ() {
         horizontalAngle = 0;
         verticalAngle = 0;
+    }
+
+    public void setTranslation(double translation) {
+        this.translation = translation;
+    }
+
+    public void setRotationWX(double rotation) {
+        rotationWX = rotation;
+    }
+
+    public void setRotationWY(double rotation) {
+        rotationWY = rotation;
+    }
+
+    public void setRotationWZ(double rotation) {
+        rotationWZ = rotation;
     }
 }
