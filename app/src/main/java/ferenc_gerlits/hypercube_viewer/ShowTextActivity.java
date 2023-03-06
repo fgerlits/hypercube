@@ -30,7 +30,7 @@ public class ShowTextActivity extends AppCompatActivity {
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        Spanned formattedText = Html.fromHtml(text);
+        Spanned formattedText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
         textView.setText(formattedText);
     }
 }
