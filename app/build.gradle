@@ -7,7 +7,7 @@ android {
         applicationId "ferenc_gerlits.hypercube_viewer"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 3
+        versionCode 4
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
