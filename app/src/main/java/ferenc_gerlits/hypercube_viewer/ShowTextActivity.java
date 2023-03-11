@@ -1,6 +1,7 @@
 package ferenc_gerlits.hypercube_viewer;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -30,7 +31,12 @@ public class ShowTextActivity extends AppCompatActivity {
         textView.setMovementMethod(ScrollingMovementMethod.getInstance());
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        Spanned formattedText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+        Spanned formattedText;
+        if (Build.VERSION.SDK_INT >= 24) {
+            formattedText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            formattedText = Html.fromHtml(text);
+        }
         textView.setText(formattedText);
     }
 }
